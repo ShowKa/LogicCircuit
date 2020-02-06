@@ -4,7 +4,7 @@ const {
   VueLoaderPlugin
 } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   mode: 'development',
@@ -30,41 +30,20 @@ module.exports = {
         ]
       },
       {
-        // 対象となるファイルの拡張子(scss)
         test: /\.scss$/,
-        // Sassファイルの読み込みとコンパイル
-        use: ExtractTextPlugin.extract([
-          // CSSをバンドルするための機能
-          {
-            loader: 'css-loader',
-            options: {
-              // オプションでCSS内のurl()メソッドの取り込まない
-              url: false,
-              // ソースマップの利用有無
-              sourceMap: true,
-              // Sass+PostCSSの場合は2を指定
-              importLoaders: 2
-            },
-          },
-          // PostCSSのための設定
+        use: [
+          // extract(or bundle) css into .css file
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          // add prefix automatically (-mox, -webkit, -ms,,,)
           {
             loader: 'postcss-loader',
             options: {
-              // PostCSS側でもソースマップを有効にする
-              sourceMap: true,
-              // ベンダープレフィックスを自動付与する
               plugins: () => [require('autoprefixer')]
-            },
-          },
-          // Sassをバンドルするための機能
-          {
-            loader: 'sass-loader',
-            options: {
-              // ソースマップの利用有無
-              sourceMap: true,
             }
-          }
-        ])
+          },
+          'sass-loader'
+        ]
       }
     ]
   },
@@ -76,9 +55,8 @@ module.exports = {
       template: 'index.html',
       inject: true
     }),
-    // js にバンドルした css を .css ファイルに抽出しなおす。
-    new ExtractTextPlugin('style.css')
-  ],
-  // source-map方式でないと、CSSの元ソースが追跡できないため
-  devtool: "source-map"
+    new MiniCssExtractPlugin({
+      filename: 'main.css'
+    })
+  ]
 }
