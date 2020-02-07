@@ -22,6 +22,12 @@ module.exports = {
         test: /\.vue$/,
         use: 'vue-loader'
       },
+      // this loader config comes after vue-loader
+      // vue-loader will split out single-file components into separate modules for html
+      {
+        test: /\.js$/,
+        use: 'babel-loader'
+      },
       {
         test: /\.css$/,
         use: [
