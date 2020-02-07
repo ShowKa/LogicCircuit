@@ -19,7 +19,16 @@ module.exports = {
     }
   },
   module: {
-    rules: [{
+    rules: [
+      // enforce:pre means that
+      // it will run before the other loaders and apply the linting rules 
+      // before the babel-loader kicks in and start processing.
+      {
+        test: /\.(js|vue)$/,
+        use: 'eslint-loader',
+        enforce: 'pre'
+      },
+      {
         test: /\.vue$/,
         use: 'vue-loader'
       },
