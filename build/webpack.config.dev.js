@@ -5,6 +5,13 @@ const {
 } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin')
+const path = require('path')
+
+function resolve(dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 module.exports = {
   mode: 'development',
@@ -21,7 +28,7 @@ module.exports = {
   module: {
     rules: [
       // enforce:pre means that
-      // it will run before the other loaders and apply the linting rules 
+      // it will run before the other loaders and apply the linting rules
       // before the babel-loader kicks in and start processing.
       {
         test: /\.(js|vue)$/,
@@ -51,7 +58,7 @@ module.exports = {
           // extract(or bundle) css into .css file
           MiniCssExtractPlugin.loader,
           'css-loader',
-          // add prefix automatically (-mox, -webkit, -ms,,,)
+          // add prefix automatically (-moz, -webkit, -ms,,,)
           {
             loader: 'postcss-loader',
             options: {
@@ -73,6 +80,15 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'main.css'
-    })
+    }),
+    // copy-webpack-plugin + write-file-plugin -> copy built files into /dist.
+    // it's not required to copy src & static into /dist during development.
+    // Because we use virtual directory which webpack-dev-server works.
+    new CopyWebpackPlugin([{
+      from: resolve('static/img'),
+      to: resolve('dist/static/img'),
+      toType: 'dir'
+    }]),
+    new WriteFilePlugin()
   ]
 }
