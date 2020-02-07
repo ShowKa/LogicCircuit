@@ -2,9 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import '../assets/app.scss'
 // BootstrapのJavaScript側の機能
-import "bootstrap";
+import 'bootstrap'
 // スタイルシート
-import "./index.scss";
+import './index.scss'
+
+/* eslint-disable-next-line no-new */
 new Vue({
   el: '#app',
   render: h => h(App)
