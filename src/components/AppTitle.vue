@@ -10,5 +10,7 @@ export default {}
 @import "assets/app";
 .app-title {
     @include default-font;
+    width: 100%;
+    background-color: red;
 }
 </style>
