@@ -1,13 +1,18 @@
 <template>
-  <div class="side" />
+  <div class="side">
+    <Palette />
+  </div>
 </template>
 <script>
-export default {}
+import Palette from './palette/Palette.vue'
+export default {
+  components: {
+    Palette
+  }
+}
 </script>
 <style lang="scss" >
 .side {
-    min-height: 100px;
-    height: 100%;
     background-color: green;
 }
 </style>
