@@ -1,5 +1,9 @@
 <template>
-  <div class="element">
+  <Moveable
+    class="element"
+    v-bind="moveable"
+    @drag="handleDrag"
+  >
     <div class="element__frame">
       <div>
         <div class="element__input element__input--border-bottom" />
@@ -10,22 +14,46 @@
       </div>
       <div class="element__output" />
     </div>
-  </div>
+  </Moveable>
 </template>
 <script>
+import Moveable from 'vue-moveable'
 export default {
+  components: {
+    Moveable
+  },
   props: {
     elementType: {
       type: String,
       required: true,
       default: 'OOO' // unset: out of order
     }
+  },
+  data: () => ({
+    moveable: {
+      draggable: true,
+      throttleDrag: 1,
+      edge: false
+    }
+  }),
+  methods: {
+    handleDrag ({
+      target,
+      transform
+    }) {
+      console.log('onDrag', transform)
+      target.style.transform = transform
+    }
   }
 }
 </script>
 <style lang="scss">
 @import "assets/app";
+.rCSlpo5wj .moveable-line {
+    background: $color-border !important;
+}
 .element {
+    // parameters
     $height: 37px;
     $width: 119px;
     $border: 3px solid $color-border;
@@ -36,6 +64,9 @@ export default {
         font-weight: bold;
         font-family: Arial;
     }
+    // style
+    width: $width;
+    height: $height;
     &__frame {
         width: $width;
         height: $height;
