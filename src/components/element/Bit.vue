@@ -1,18 +1,14 @@
 <template>
 <Moveable
-  class="element"
+  class="bit"
   v-bind="moveable"
   @drag="handleDrag"
 >
-  <div class="element__frame">
-    <div>
-      <div class="element__input element__input--border-bottom" />
-      <div class="element__input" />
+  <div class="bitt__frame">
+    <div class="bit__center">
+      1
     </div>
-    <div class="element__center">
-      {{ elementType }}
-    </div>
-    <div class="element__output" />
+    <div class="bit__output" />
   </div>
 </Moveable>
 </template>
@@ -21,13 +17,6 @@ import Moveable from 'vue-moveable'
 export default {
   components: {
     Moveable
-  },
-  props: {
-    elementType: {
-      type: String,
-      required: true,
-      default: 'OOO' // unset: out of order
-    }
   },
   data: () => ({
     moveable: {
@@ -50,10 +39,10 @@ export default {
 <style lang="scss">
 @import "assets/app";
 @import "./element";
-.element {
+.bit {
     // parameters
     $height: 37px;
-    $width: 119px;
+    $width: 47px;
     $border: 3px solid $color-border;
     // style
     width: $width;
@@ -65,19 +54,12 @@ export default {
         outline: $border;
         background-color: $color-base;
     }
-    &__input {
-        width: $width * (1 /10);
-        height: $height / 2;
-        &--border-bottom {
-            border-bottom: $border;
-        }
-    }
     &__output {
         width: $width * (1 /10);
         height: $height;
     }
     &__center {
-        width: $width * (8 / 10);
+        width: $width * (9 / 10);
         height: $height;
         background-color: $color-border;
         @include elm-font;
