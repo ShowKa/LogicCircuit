@@ -1,7 +1,7 @@
 <template>
-  <h1 class="app-title">
-    電子回路
-  </h1>
+<h1 class="app-title">
+  Logical Circuit
+</h1>
 </template>
 <script>
 export default {}
@@ -10,5 +10,6 @@ export default {}
 @import "assets/app";
 .app-title {
     @include default-font;
+    width: 100%;
 }
 </style>
