@@ -1,0 +1,13 @@
+
+@mixin elm-font {
+  color: $color-base;
+  letter-spacing: 1px;
+  font-size: 23px;
+  font-weight: bold;
+  font-family: Arial;
+}
+
+// override default-line color of moveable
+.rCSlpo5wj .moveable-line {
+  background: $color-border !important;
+}

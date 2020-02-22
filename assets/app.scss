@@ -1,8 +1,17 @@
-.full-width {
-  width: 100%;
+// font
+@mixin default-font {
+    font-family: "Hiragino Kaku Gothic ProN","メイリオ", sans-serif;
 }
-.center-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+@mixin text-to-center($height) {
+    text-align: center;
+    vertical-align: middle;
+    line-height: $height;
+}
+
+// color
+$color-base: #0e83cd;
+$color-border: #f8f8f8;
+@mixin background-color-base{
+  background-color: $color-base;
 }
