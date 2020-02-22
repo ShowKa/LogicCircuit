@@ -12,15 +12,20 @@
     <div class="element__center">
       {{ elementType }}
     </div>
-    <div class="element__output" />
+    <IoDevice
+      class="element__output"
+      io-type="output"
+    />
   </div>
 </Moveable>
 </template>
 <script>
 import Moveable from 'vue-moveable'
+import IoDevice from './IoDevice.vue'
 export default {
   components: {
-    Moveable
+    Moveable,
+    IoDevice
   },
   props: {
     elementType: {
@@ -41,7 +46,6 @@ export default {
       target,
       transform
     }) {
-      console.log('onDrag', transform)
       target.style.transform = transform
     }
   }
