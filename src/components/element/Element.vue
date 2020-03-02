@@ -6,8 +6,14 @@
 >
   <div class="element__frame">
     <div>
-      <div class="element__input element__input--border-bottom" />
-      <div class="element__input" />
+      <IoDevice
+        io-type="input"
+        class="element__input element__input--border-bottom"
+      />
+      <IoDevice
+        io-type="input"
+        class="element__input"
+      />
     </div>
     <div class="element__center">
       {{ elementType }}

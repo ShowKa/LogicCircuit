@@ -4,9 +4,29 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  name: 'Tanaka'
+  nominated: []
+}
+
+const getters = {
+  nominated (state) {
+    return state.nominated
+  }
+}
+
+const mutations = {
+  pushNominated (state, payload) {
+    state.nominated.push(payload.element)
+  }
+}
+
+const actions = {
+  pushNominated (context, payload) {
+    context.commit('pushNominated', {
+      element: payload.element
+    })
+  }
 }
 
 export default new Vuex.Store({
-  state
+  state, getters, mutations, actions
 })

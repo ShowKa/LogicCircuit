@@ -1,13 +1,38 @@
 <template>
-  <div class="board" />
+<div class="board">
+  <Element element-type="AND" />
+  {{ nominated.length }}
+</div>
 </template>
 <script>
-export default {}
+import {
+  mapGetters,
+  mapState
+} from 'vuex'
+import Element from './element/Element.vue'
+export default {
+  components: {
+    Element
+  },
+  computed: {
+    ...mapState({
+      nominated: 'nominated'
+    })
+  },
+  watch: {
+    nominated(newValue, oldValue) {}
+  },
+  methods: {
+    ...mapGetters({
+      // nominated: 'nominated'
+    })
+  }
+}
 </script>
 <style lang="scss" >
 .board {
-  height: 100px;
-  width: 100%;
-  background-color: yellow;
+    height: 100px;
+    width: 100%;
+    background-color: yellow;
 }
 </style>

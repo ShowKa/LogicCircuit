@@ -2,10 +2,13 @@
 <template>
 <div
   class="io-device"
-  @mouseup="toggleStatus"
+  @mouseup="onMouseUp"
 />
 </template>
 <script>
+import {
+  mapActions
+} from 'vuex'
 export default {
   props: {
     ioType: {
@@ -13,12 +16,19 @@ export default {
       required: true
     }
   },
-  data: () => ({
-    status: false
-  }),
+  data() {
+    return {
+      setOnBoard: true
+    }
+  },
   methods: {
-    toggleStatus: function(e) {
-      this.status = !this.status
+    ...mapActions({
+      pushNominated: 'pushNominated'
+    }),
+    onMouseUp() {
+      this.pushNominated({
+        element: this
+      })
     }
   }
 }
