@@ -16,6 +16,9 @@ const getters = {
 const mutations = {
   pushNominated (state, payload) {
     state.nominated.push(payload.element)
+  },
+  clearNominated (state, payload) {
+    state.nominated.length = 0
   }
 }
 
@@ -24,6 +27,9 @@ const actions = {
     context.commit('pushNominated', {
       element: payload.element
     })
+  },
+  clearNominated (context, payload) {
+    context.commit('clearNominated')
   }
 }
 

@@ -34,6 +34,10 @@ export default {
       if (newValue.length === 0) {
         return
       }
+      if (newValue.length >= 2) {
+        this.acceptable = false
+        return
+      }
       const nominated = newValue[0]
       const ioType = nominated.ioType
       if (this.ioType === ioType) {
@@ -44,12 +48,24 @@ export default {
   },
   methods: {
     ...mapActions({
-      pushNominated: 'pushNominated'
+      pushNominated: 'pushNominated',
+      clearNominated: 'clearNominated'
     }),
     onMouseUp() {
-      this.pushNominated({
-        element: this
-      })
+      const _push = () => {
+        this.pushNominated({
+          element: this
+        })
+      }
+      const nominated = this.nominated
+      if (nominated.length === 0) {
+        _push()
+        return
+      }
+      if (!this.acceptable) {
+        this.clearNominated()
+      }
+      _push()
     },
     accept() {
       this.acceptable = true

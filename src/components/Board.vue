@@ -1,6 +1,7 @@
 <template>
 <div class="board">
   <Element element-type="AND" />
+  <Element element-type="OR" />
   {{ nominated.length }}
 </div>
 </template>
