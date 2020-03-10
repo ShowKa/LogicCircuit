@@ -14,8 +14,8 @@ import {
 } from 'vuex'
 // imports
 import Vue from 'vue'
-import Element from './element/Element.vue'
-import Conductor from './element/Conductor.vue'
+import Element from './Element.vue'
+import Conductor from './Conductor.vue'
 var ConductorClass = Vue.extend(Conductor)
 // component
 export default {
@@ -69,7 +69,7 @@ export default {
 .board {
     height: 100%;
     width: 100%;
-    background-color: yellow;
+    background-color: #f0f0f0;
     &__conductor {
         position: absolute;
         top: 0;

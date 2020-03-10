@@ -1,11 +1,12 @@
 <template>
-<div class="main">
+<!--https://stackoverflow.com/questions/42194886/how-to-make-the-row-stretch-remaining-height-->
+<div class="main d-flex h-100 flex-column">
   <div class="row">
     <div class="col-md-12">
       <AppTitle />
     </div>
   </div>
-  <div class="row">
+  <div class="row flex-fill">
     <div class="col-md-12">
       <Board class="main__board" />
     </div>
@@ -14,7 +15,7 @@
 </template>
 <script>
 import AppTitle from './AppTitle.vue'
-import Board from './Board.vue'
+import Board from './element/Board.vue'
 export default {
   components: {
     AppTitle,
@@ -24,6 +25,6 @@ export default {
 </script>
 <style lang="scss" >
 .main__board {
-    height: 300px;
+    height: 100%;
 }
 </style>
