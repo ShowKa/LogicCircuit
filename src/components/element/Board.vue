@@ -69,7 +69,7 @@ export default {
 .board {
     height: 100%;
     width: 100%;
-    background-color: #f0f0f0;
+    background-image: url("/static/img/grid.png");
     &__conductor {
         position: absolute;
         top: 0;
