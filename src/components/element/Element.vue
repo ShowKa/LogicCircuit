@@ -42,9 +42,7 @@ export default {
   },
   data: () => ({
     moveable: {
-      draggable: true,
-      throttleDrag: 1,
-      edge: false
+      draggable: true
     }
   }),
   methods: {
@@ -52,7 +50,17 @@ export default {
       target,
       transform
     }) {
-      target.style.transform = transform
+      // transform = matrix(0,1,2,3,4,5) translate(6, 7)
+      const num = transform.match(/[-]?\d+/g)
+      const x = parseInt(num[6])
+      const y = parseInt(num[7])
+      const remX = x % 20
+      const remY = y % 20
+      const roundedX = remX < 10 ? (x - remX) : x + (20 - remX)
+      const roundedY = remY < 10 ? (y - remY) : y + (20 - remY)
+      const matrix = `matrix(${num[0]},${num[1]},${num[2]},${num[3]},${num[4]},${num[5]})`
+      const roundedTrans = `translate(${roundedX}px, ${roundedY}px)`
+      target.style.transform = `${matrix} ${roundedTrans}`
     }
   }
 }
@@ -62,9 +70,9 @@ export default {
 @import "./element";
 .element {
     // parameters
-    $height: 37px;
-    $width: 119px;
-    $border: 3px solid $color-border;
+    $height: 40px;
+    $width: 120px;
+    $border: 1px solid $color-border;
     // style
     width: $width;
     height: $height;

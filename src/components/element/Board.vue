@@ -3,8 +3,9 @@
   ref="container"
   class="board"
 >
-  <Element element-type="AND" />
   <Element element-type="OR" />
+  <Element element-type="AND" />
+  <Element element-type="NAND" />
 </div>
 </template>
 <script>
