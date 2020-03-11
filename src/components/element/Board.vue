@@ -4,8 +4,21 @@
   class="board"
 >
   <Element element-type="OR" />
-  <Element element-type="AND" />
-  <Element element-type="NAND" />
+  <!--AND-->
+  <div
+    draggable="true"
+    @drag="test($event, $el)"
+  >
+    <Element element-type="AND" />
+  </div>
+  <!--NAND-->
+  <Moveable
+    v-bind="moveable"
+    style="display:inline-block;"
+    @drag="handleDrag"
+  >
+    <Element element-type="NAND" />
+  </Moveable>
 </div>
 </template>
 <script>
@@ -16,20 +29,24 @@ import {
 // imports
 import Vue from 'vue'
 import Element from './Element.vue'
+import Moveable from 'vue-moveable'
 import Conductor from './Conductor.vue'
 var ConductorClass = Vue.extend(Conductor)
 // component
 export default {
   components: {
+    Moveable,
     Element
   },
+  data: () => ({
+    moveable: {
+      draggable: true
+    }
+  }),
   computed: {
     ...mapState({
       nominated: 'nominated'
-    }),
-    positionX() {
-      return 0
-    }
+    })
   },
   watch: {
     nominated(newValue, oldValue) {
@@ -41,7 +58,6 @@ export default {
       const _1st = nominated[0]
       const _2nd = nominated[1]
       const rect = this.$el.getBoundingClientRect()
-      console.log(_1st)
       const conductor = new ConductorClass({
         propsData: {
           height: rect.height,
@@ -59,10 +75,30 @@ export default {
     }
   },
   methods: {
+    test(event, board) {
+      console.log(event)
+      console.log(board)
+    },
     ...mapActions({
       pushNominated: 'pushNominated',
       clearNominated: 'clearNominated'
-    })
+    }),
+    handleDrag({
+      target,
+      transform
+    }) {
+      // transform = matrix(0,1,2,3,4,5) translate(6, 7)
+      const num = transform.match(/[-]?\d+/g)
+      const x = parseInt(num[6])
+      const y = parseInt(num[7])
+      const remX = x % 20
+      const remY = y % 20
+      const roundedX = remX < 10 ? (x - remX) : x + (20 - remX)
+      const roundedY = remY < 10 ? (y - remY) : y + (20 - remY)
+      const matrix = `matrix(${num[0]},${num[1]},${num[2]},${num[3]},${num[4]},${num[5]})`
+      const roundedTrans = `translate(${roundedX}px, ${roundedY}px)`
+      target.style.transform = `${matrix} ${roundedTrans}`
+    }
   }
 }
 </script>
