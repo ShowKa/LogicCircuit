@@ -21,6 +21,12 @@ Vue.directive('draggable', {
       top = top >= 0 ? top : 0
       var left = startX + dx
       left = left >= 0 ? left : 0
+      var parentRect = el.offsetParent.getBoundingClientRect()
+      var thisRect = el.getBoundingClientRect()
+      var topMax = parentRect.height - thisRect.height
+      var leftMax = parentRect.width - thisRect.width
+      top = top > topMax ? topMax : top
+      left = left > leftMax ? leftMax : left
       el.style.top = top + 'px'
       el.style.left = left + 'px'
       return false
