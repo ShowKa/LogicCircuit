@@ -15,7 +15,6 @@ Vue.directive('draggable', {
     var startX, startY, initialMouseX, initialMouseY
 
     function mousemove (e) {
-      console.log(e)
       var dx = e.clientX - initialMouseX
       var dy = e.clientY - initialMouseY
       var top = startY + dy

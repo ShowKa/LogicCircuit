@@ -27,24 +27,7 @@ export default {
   computed: {
     ...mapState({
       nominated: 'nominated'
-    }),
-    positionX() {
-      const thisElement = this.$el
-      const thisRect = thisElement.getBoundingClientRect()
-      const parentElement = this.$parent.$el
-      // const parentRect = parentElement.getBoundingClientRect()
-      // return thisElement.getBoundingClientRect().x - parentElement.getBoundingClientRect().x
-      return thisRect.x - parentElement.offsetLeft
-    },
-    positionY() {
-      const thisElement = this.$el
-      const thisRect = thisElement.getBoundingClientRect()
-      const parentElement = this.$parent.$el
-      // const parentRect = parentElement.getBoundingClientRect()
-      // return thisElement.getBoundingClientRect().y - parentElement.getBoundingClientRect().top
-      return thisRect.y - parentElement.offsetTop - thisRect.height
-      // return thisRect.y - parentElement.offsetTop
-    }
+    })
   },
   watch: {
     nominated(newValue, oldValue) {
