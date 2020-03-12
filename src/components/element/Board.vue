@@ -3,22 +3,11 @@
   ref="container"
   class="board"
 >
-  <Element element-type="OR" />
   <!--AND-->
-  <div
-    draggable="true"
-    @drag="test($event, $el)"
-  >
-    <Element element-type="AND" />
-  </div>
-  <!--NAND-->
-  <Moveable
-    v-bind="moveable"
-    style="display:inline-block;"
-    @drag="handleDrag"
-  >
-    <Element element-type="NAND" />
-  </Moveable>
+  <Element
+    v-draggable
+    element-type="AND"
+  />
 </div>
 </template>
 <script>
@@ -29,20 +18,14 @@ import {
 // imports
 import Vue from 'vue'
 import Element from './Element.vue'
-import Moveable from 'vue-moveable'
 import Conductor from './Conductor.vue'
 var ConductorClass = Vue.extend(Conductor)
 // component
 export default {
   components: {
-    Moveable,
     Element
   },
-  data: () => ({
-    moveable: {
-      draggable: true
-    }
-  }),
+  data: () => ({}),
   computed: {
     ...mapState({
       nominated: 'nominated'
@@ -75,10 +58,6 @@ export default {
     }
   },
   methods: {
-    test(event, board) {
-      console.log(event)
-      console.log(board)
-    },
     ...mapActions({
       pushNominated: 'pushNominated',
       clearNominated: 'clearNominated'
@@ -107,6 +86,9 @@ export default {
     height: 100%;
     width: 100%;
     background-image: url("/static/img/grid.png");
+    position: relative;
+    top: 0;
+    left: 0;
     &__conductor {
         position: absolute;
         top: 0;
