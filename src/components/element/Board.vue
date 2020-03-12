@@ -3,10 +3,13 @@
   ref="container"
   class="board"
 >
-  <!--AND-->
   <Element
     v-draggable
     element-type="AND"
+  />
+  <Element
+    v-draggable
+    element-type="OR"
   />
 </div>
 </template>
@@ -38,17 +41,22 @@ export default {
         return
       }
       // append conductor into dom
-      const _1st = nominated[0]
-      const _2nd = nominated[1]
+      const elm1 = nominated[0]
+      const elm2 = nominated[1]
+      const pos1 = this.getCoords(elm1.$el)
+      const pos2 = this.getCoords(elm2.$el)
+      const posOfBoard = this.getCoords(this.$el)
+      const rect1 = elm1.$el.getBoundingClientRect()
+      const rect2 = elm2.$el.getBoundingClientRect()
       const rect = this.$el.getBoundingClientRect()
       const conductor = new ConductorClass({
         propsData: {
           height: rect.height,
           width: rect.width,
-          x1: _1st.positionX,
-          y1: _1st.positionY,
-          x2: _2nd.positionX,
-          y2: _2nd.positionY
+          x1: pos1.left - posOfBoard.left + rect1.width / 2,
+          y1: pos1.top - posOfBoard.top + rect1.height / 2,
+          x2: pos2.left - posOfBoard.left + rect2.width / 2,
+          y2: pos2.top - posOfBoard.top + rect2.height / 2
         }
       })
       conductor.$mount()
@@ -62,21 +70,21 @@ export default {
       pushNominated: 'pushNominated',
       clearNominated: 'clearNominated'
     }),
-    handleDrag({
-      target,
-      transform
-    }) {
-      // transform = matrix(0,1,2,3,4,5) translate(6, 7)
-      const num = transform.match(/[-]?\d+/g)
-      const x = parseInt(num[6])
-      const y = parseInt(num[7])
-      const remX = x % 20
-      const remY = y % 20
-      const roundedX = remX < 10 ? (x - remX) : x + (20 - remX)
-      const roundedY = remY < 10 ? (y - remY) : y + (20 - remY)
-      const matrix = `matrix(${num[0]},${num[1]},${num[2]},${num[3]},${num[4]},${num[5]})`
-      const roundedTrans = `translate(${roundedX}px, ${roundedY}px)`
-      target.style.transform = `${matrix} ${roundedTrans}`
+    // crossbrowser version
+    getCoords(elem) {
+      var box = elem.getBoundingClientRect()
+      var body = document.body
+      var docEl = document.documentElement
+      var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop
+      var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft
+      var clientTop = docEl.clientTop || body.clientTop || 0
+      var clientLeft = docEl.clientLeft || body.clientLeft || 0
+      var top = box.top + scrollTop - clientTop
+      var left = box.left + scrollLeft - clientLeft
+      return {
+        top: Math.round(top),
+        left: Math.round(left)
+      }
     }
   }
 }
