@@ -23,7 +23,6 @@ export default {
       type: Number,
       required: true
     },
-
     x1: {
       type: Number,
       required: true
@@ -38,6 +37,10 @@ export default {
     },
     y2: {
       type: Number,
+      required: true
+    },
+    devices: {
+      type: Array,
       required: true
     }
   },

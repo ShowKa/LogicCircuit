@@ -21,7 +21,8 @@ export default {
   data() {
     return {
       setOnBoard: true,
-      acceptable: false
+      acceptable: false,
+      conductor: {}
     }
   },
   computed: {
@@ -55,7 +56,7 @@ export default {
     onMouseUp() {
       const _push = () => {
         this.pushNominated({
-          element: this
+          component: this
         })
       }
       const nominated = this.nominated
@@ -70,6 +71,9 @@ export default {
     },
     accept() {
       this.acceptable = true
+    },
+    setConductor(conductor) {
+      this.conductor = conductor
     }
   }
 }

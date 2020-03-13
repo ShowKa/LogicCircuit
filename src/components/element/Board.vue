@@ -1,16 +1,17 @@
 <template>
-<div
-  ref="container"
-  class="board"
->
-  <button @click="addAND">
+<div class="board">
+  <button
+    ref="button"
+    @click="addAND"
+  >
     AND
   </button>
   <fieldset
-    v-for="(element, index) in elements"
-    :key="'element_' + index"
+    v-for="element in elements"
+    :key="element.key"
   >
     <Element
+      ref="elements"
       v-draggable
       :element-type="element.type"
     />
@@ -20,6 +21,7 @@
     :key="'conductor_' + index"
   >
     <Conductor
+      ref="conductors"
       class="board__conductor"
       v-bind="conductor"
     />
@@ -40,13 +42,17 @@ export default {
     Element,
     Conductor
   },
-  data: () => ({
-    elements: [],
-    conductors: []
-  }),
+  data() {
+    return {
+      elements: [],
+      conductors: []
+    }
+  },
   computed: {
     ...mapState({
-      nominated: 'nominated'
+      nominated: 'nominated',
+      elementsInState: 'elements',
+      conductorInState: 'conductors'
     })
   },
   watch: {
@@ -56,13 +62,13 @@ export default {
         return
       }
       // append conductor into dom
-      const elm1 = nominated[0]
-      const elm2 = nominated[1]
-      const pos1 = this.getCoords(elm1.$el)
-      const pos2 = this.getCoords(elm2.$el)
+      const io1 = nominated[0]
+      const io2 = nominated[1]
+      const pos1 = this.getCoords(io1.$el)
+      const pos2 = this.getCoords(io2.$el)
       const posOfBoard = this.getCoords(this.$el)
-      const rect1 = elm1.$el.getBoundingClientRect()
-      const rect2 = elm2.$el.getBoundingClientRect()
+      const rect1 = io1.$el.getBoundingClientRect()
+      const rect2 = io2.$el.getBoundingClientRect()
       const rect = this.$el.getBoundingClientRect()
       const props = {
         height: rect.height,
@@ -70,16 +76,28 @@ export default {
         x1: pos1.left - posOfBoard.left + rect1.width / 2,
         y1: pos1.top - posOfBoard.top + rect1.height / 2,
         x2: pos2.left - posOfBoard.left + rect2.width / 2,
-        y2: pos2.top - posOfBoard.top + rect2.height / 2
+        y2: pos2.top - posOfBoard.top + rect2.height / 2,
+        devices: [io1, io2]
       }
       this.conductors.push(props)
+      this.$nextTick(function() {
+        const len = this.$refs.conductors.length
+        const target = this.$refs.conductors[len - 1]
+        this.pushConductor({
+          component: target
+        })
+        const devices = target.devices
+        devices[0].setConductor(target)
+        devices[1].setConductor(target)
+      })
       this.clearNominated()
     }
   },
   methods: {
     ...mapActions({
-      pushNominated: 'pushNominated',
-      clearNominated: 'clearNominated'
+      clearNominated: 'clearNominated',
+      pushElement: 'pushElement',
+      pushConductor: 'pushConductor'
     }),
     // crossbrowser version
     getCoords(elem) {
@@ -99,9 +117,20 @@ export default {
     },
     addAND() {
       const props = {
-        type: 'AND'
+        type: 'AND',
+        key: 'element_' + (new Date().getTime())
       }
       this.elements.push(props)
+      // $refs.elements can not be initialized until dom updated.
+      // Don't use promise after $nextTick,
+      // because can not access component using "this".
+      this.$nextTick(function() {
+        const len = this.$refs.elements.length
+        const target = this.$refs.elements[len - 1]
+        this.pushElement({
+          component: target
+        })
+      })
     }
   }
 }
