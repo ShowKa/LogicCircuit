@@ -3,32 +3,47 @@
   ref="container"
   class="board"
 >
-  <Element
-    v-draggable
-    element-type="AND"
-  />
-  <Element
-    v-draggable
-    element-type="OR"
-  />
+  <button @click="addAND">
+    AND
+  </button>
+  <fieldset
+    v-for="(element, index) in elements"
+    :key="'element_' + index"
+  >
+    <Element
+      v-draggable
+      :element-type="element.type"
+    />
+  </fieldset>
+  <fieldset
+    v-for="(conductor, index) in conductors"
+    :key="'conductor_' + index"
+  >
+    <Conductor
+      class="board__conductor"
+      v-bind="conductor"
+    />
+  </fieldset>
 </div>
 </template>
 <script>
+// imports
 import {
   mapState,
   mapActions
 } from 'vuex'
-// imports
-import Vue from 'vue'
 import Element from './Element.vue'
 import Conductor from './Conductor.vue'
-var ConductorClass = Vue.extend(Conductor)
 // component
 export default {
   components: {
-    Element
+    Element,
+    Conductor
   },
-  data: () => ({}),
+  data: () => ({
+    elements: [],
+    conductors: []
+  }),
   computed: {
     ...mapState({
       nominated: 'nominated'
@@ -49,19 +64,15 @@ export default {
       const rect1 = elm1.$el.getBoundingClientRect()
       const rect2 = elm2.$el.getBoundingClientRect()
       const rect = this.$el.getBoundingClientRect()
-      const conductor = new ConductorClass({
-        propsData: {
-          height: rect.height,
-          width: rect.width,
-          x1: pos1.left - posOfBoard.left + rect1.width / 2,
-          y1: pos1.top - posOfBoard.top + rect1.height / 2,
-          x2: pos2.left - posOfBoard.left + rect2.width / 2,
-          y2: pos2.top - posOfBoard.top + rect2.height / 2
-        }
-      })
-      conductor.$mount()
-      conductor.$el.classList.add('board__conductor')
-      this.$refs.container.appendChild(conductor.$el)
+      const props = {
+        height: rect.height,
+        width: rect.width,
+        x1: pos1.left - posOfBoard.left + rect1.width / 2,
+        y1: pos1.top - posOfBoard.top + rect1.height / 2,
+        x2: pos2.left - posOfBoard.left + rect2.width / 2,
+        y2: pos2.top - posOfBoard.top + rect2.height / 2
+      }
+      this.conductors.push(props)
       this.clearNominated()
     }
   },
@@ -85,6 +96,12 @@ export default {
         top: Math.round(top),
         left: Math.round(left)
       }
+    },
+    addAND() {
+      const props = {
+        type: 'AND'
+      }
+      this.elements.push(props)
     }
   }
 }
