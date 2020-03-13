@@ -18,8 +18,8 @@
     />
   </fieldset>
   <fieldset
-    v-for="(conductor, index) in conductors"
-    :key="'conductor_' + index"
+    v-for="conductor in conductors"
+    :key="conductor.key"
   >
     <Conductor
       ref="conductors"
@@ -62,23 +62,20 @@ export default {
       if (nominated.length < 2) {
         return
       }
-      // append conductor into dom
+      // generate conductor & append into dom
+      const rect = this.$el.getBoundingClientRect()
       const io1 = nominated[0]
       const io2 = nominated[1]
-      const pos1 = this.getCoords(io1.$el)
-      const pos2 = this.getCoords(io2.$el)
-      const posOfBoard = this.getCoords(this.$el)
-      const rect1 = io1.$el.getBoundingClientRect()
-      const rect2 = io2.$el.getBoundingClientRect()
-      const rect = this.$el.getBoundingClientRect()
+      const cood = this.calCoodOfConductor(io1, io2)
       const props = {
         height: rect.height,
         width: rect.width,
-        x1: pos1.left - posOfBoard.left + rect1.width / 2,
-        y1: pos1.top - posOfBoard.top + rect1.height / 2,
-        x2: pos2.left - posOfBoard.left + rect2.width / 2,
-        y2: pos2.top - posOfBoard.top + rect2.height / 2,
-        devices: [io1, io2]
+        x1: cood.x1,
+        y1: cood.y1,
+        x2: cood.x2,
+        y2: cood.y2,
+        devices: [io1, io2],
+        key: 'devices_' + (new Date().getTime())
       }
       this.conductors.push(props)
       this.$nextTick(function() {
@@ -100,22 +97,6 @@ export default {
       pushElement: 'pushElement',
       pushConductor: 'pushConductor'
     }),
-    // crossbrowser version
-    getCoords(elem) {
-      var box = elem.getBoundingClientRect()
-      var body = document.body
-      var docEl = document.documentElement
-      var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop
-      var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft
-      var clientTop = docEl.clientTop || body.clientTop || 0
-      var clientLeft = docEl.clientLeft || body.clientLeft || 0
-      var top = box.top + scrollTop - clientTop
-      var left = box.left + scrollLeft - clientLeft
-      return {
-        top: Math.round(top),
-        left: Math.round(left)
-      }
-    },
     addAND() {
       const props = {
         type: 'AND',
@@ -135,26 +116,46 @@ export default {
     },
     onDraggingElement(element) {
       const devices = element.getDevices()
-      const board = this
-      devices.forEach(function(d) {
+      for (const d of devices) {
         const conductor = d.getConductor()
         if (!conductor) {
-          return
+          continue
         }
         const bothDev = conductor.devices
         const io1 = bothDev[0]
         const io2 = bothDev[1]
-        const pos1 = board.getCoords(io1.$el)
-        const pos2 = board.getCoords(io2.$el)
-        const posOfBoard = board.getCoords(board.$el)
-        const rect1 = io1.$el.getBoundingClientRect()
-        const rect2 = io2.$el.getBoundingClientRect()
-        const x1 = pos1.left - posOfBoard.left + rect1.width / 2
-        const y1 = pos1.top - posOfBoard.top + rect1.height / 2
-        const x2 = pos2.left - posOfBoard.left + rect2.width / 2
-        const y2 = pos2.top - posOfBoard.top + rect2.height / 2
-        conductor.updateCood(x1, y1, x2, y2)
-      })
+        const cood = this.calCoodOfConductor(io1, io2)
+        conductor.updateCood(cood.x1, cood.y1, cood.x2, cood.y2)
+      }
+    },
+    // crossbrowser version
+    getCoords(elem) {
+      const box = elem.getBoundingClientRect()
+      const body = document.body
+      const docEl = document.documentElement
+      const scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop
+      const scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft
+      const clientTop = docEl.clientTop || body.clientTop || 0
+      const clientLeft = docEl.clientLeft || body.clientLeft || 0
+      const top = box.top + scrollTop - clientTop
+      const left = box.left + scrollLeft - clientLeft
+      return {
+        top: Math.round(top),
+        left: Math.round(left)
+      }
+    },
+    calCoodOfConductor(io1, io2) {
+      const pos1 = this.getCoords(io1.$el)
+      const pos2 = this.getCoords(io2.$el)
+      const posOfBoard = this.getCoords(this.$el)
+      const rect1 = io1.$el.getBoundingClientRect()
+      const rect2 = io2.$el.getBoundingClientRect()
+      return {
+        x1: pos1.left - posOfBoard.left + rect1.width / 2,
+        y1: pos1.top - posOfBoard.top + rect1.height / 2,
+        x2: pos2.left - posOfBoard.left + rect2.width / 2,
+        y2: pos2.top - posOfBoard.top + rect2.height / 2
+      }
     }
   }
 }
