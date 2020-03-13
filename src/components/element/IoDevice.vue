@@ -22,7 +22,7 @@ export default {
     return {
       setOnBoard: true,
       acceptable: false,
-      conductor: null
+      conductor: []
     }
   },
   computed: {
@@ -72,10 +72,10 @@ export default {
     accept() {
       this.acceptable = true
     },
-    setConductor(conductor) {
-      this.conductor = conductor
+    pushConductor(conductor) {
+      this.conductor.push(conductor)
     },
-    getConductor(conductor) {
+    getConductors(conductor) {
       return this.conductor
     }
   }

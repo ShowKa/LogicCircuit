@@ -85,8 +85,8 @@ export default {
           component: target
         })
         const devices = target.devices
-        devices[0].setConductor(target)
-        devices[1].setConductor(target)
+        devices[0].pushConductor(target)
+        devices[1].pushConductor(target)
       })
       this.clearNominated()
     }
@@ -117,15 +117,17 @@ export default {
     onDraggingElement(element) {
       const devices = element.getDevices()
       for (const d of devices) {
-        const conductor = d.getConductor()
-        if (!conductor) {
+        const conductors = d.getConductors()
+        if (conductors.length === 0) {
           continue
         }
-        const bothDev = conductor.devices
-        const io1 = bothDev[0]
-        const io2 = bothDev[1]
-        const cood = this.calCoodOfConductor(io1, io2)
-        conductor.updateCood(cood.x1, cood.y1, cood.x2, cood.y2)
+        for (const conductor of conductors) {
+          const bothDev = conductor.devices
+          const io1 = bothDev[0]
+          const io2 = bothDev[1]
+          const cood = this.calCoodOfConductor(io1, io2)
+          conductor.updateCood(cood.x1, cood.y1, cood.x2, cood.y2)
+        }
       }
     },
     // crossbrowser version
