@@ -14,6 +14,7 @@
       ref="elements"
       v-draggable
       :element-type="element.type"
+      @dragging="onDraggingElement"
     />
   </fieldset>
   <fieldset
@@ -130,6 +131,29 @@ export default {
         this.pushElement({
           component: target
         })
+      })
+    },
+    onDraggingElement(element) {
+      const devices = element.getDevices()
+      const board = this
+      devices.forEach(function(d) {
+        const conductor = d.getConductor()
+        if (!conductor) {
+          return
+        }
+        const bothDev = conductor.devices
+        const io1 = bothDev[0]
+        const io2 = bothDev[1]
+        const pos1 = board.getCoords(io1.$el)
+        const pos2 = board.getCoords(io2.$el)
+        const posOfBoard = board.getCoords(board.$el)
+        const rect1 = io1.$el.getBoundingClientRect()
+        const rect2 = io2.$el.getBoundingClientRect()
+        const x1 = pos1.left - posOfBoard.left + rect1.width / 2
+        const y1 = pos1.top - posOfBoard.top + rect1.height / 2
+        const x2 = pos2.left - posOfBoard.left + rect2.width / 2
+        const y2 = pos2.top - posOfBoard.top + rect2.height / 2
+        conductor.updateCood(x1, y1, x2, y2)
       })
     }
   }

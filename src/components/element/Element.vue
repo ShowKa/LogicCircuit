@@ -2,10 +2,12 @@
 <div class="element">
   <div>
     <IoDevice
+      ref="in1"
       io-type="input"
       class="element__input element__input--border-bottom"
     />
     <IoDevice
+      ref="in2"
       io-type="input"
       class="element__input"
     />
@@ -14,6 +16,7 @@
     {{ elementType }}
   </div>
   <IoDevice
+    ref="out"
     class="element__output"
     io-type="output"
   />
@@ -32,7 +35,12 @@ export default {
       default: 'OOO' // unset: out of order
     }
   },
-  methods: {}
+  methods: {
+    getDevices() {
+      const refs = this.$refs
+      return [refs.in1, refs.in2, refs.out]
+    }
+  }
 }
 </script>
 <style lang="scss">

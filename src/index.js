@@ -10,9 +10,10 @@ import 'bootstrap'
 import './index.scss'
 
 Vue.directive('draggable', {
-  bind: function (el) {
+  bind: function (el, binding, vnode) {
     el.style.position = 'absolute'
     var startX, startY, initialMouseX, initialMouseY
+    const component = vnode.componentInstance
 
     function mousemove (e) {
       var dx = e.clientX - initialMouseX
@@ -29,6 +30,7 @@ Vue.directive('draggable', {
       left = left > leftMax ? leftMax : left
       el.style.top = top + 'px'
       el.style.left = left + 'px'
+      component.$emit('dragging', component)
       return false
     }
 

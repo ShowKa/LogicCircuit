@@ -22,7 +22,7 @@ export default {
     return {
       setOnBoard: true,
       acceptable: false,
-      conductor: {}
+      conductor: null
     }
   },
   computed: {
@@ -74,6 +74,9 @@ export default {
     },
     setConductor(conductor) {
       this.conductor = conductor
+    },
+    getConductor(conductor) {
+      return this.conductor
     }
   }
 }
