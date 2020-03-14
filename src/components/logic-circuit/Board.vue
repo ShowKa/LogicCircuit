@@ -20,20 +20,20 @@
     <Constant
       ref="constants"
       v-draggable
-      :value="constant.value"
-      @dragging="onDraggingElement"
+      :level="constant.level"
+      @dragging="onDragging"
     />
   </fieldset>
-  <!-- Element -->
+  <!-- Gate -->
   <fieldset
-    v-for="element in elements"
-    :key="element.key"
+    v-for="gate in gates"
+    :key="gate.key"
   >
-    <Element
-      ref="elements"
+    <Gate
+      ref="gates"
       v-draggable
-      :element-type="element.type"
-      @dragging="onDraggingElement"
+      :gate-type="gate.type"
+      @dragging="onDragging"
     />
   </fieldset>
   <!-- Display -->
@@ -44,8 +44,8 @@
     <Display
       ref="displays"
       v-draggable
-      :value="display.value"
-      @dragging="onDraggingElement"
+      :level="display.level"
+      @dragging="onDragging"
     />
   </fieldset>
   <!-- Conductor -->
@@ -67,14 +67,14 @@ import {
   mapState,
   mapActions
 } from 'vuex'
-import Element from './Element.vue'
+import Gate from './Gate.vue'
 import Constant from './Constant.vue'
 import Display from './Display.vue'
 import Conductor from './Conductor.vue'
 // component
 export default {
   components: {
-    Element,
+    Gate,
     Display,
     Constant,
     Conductor
@@ -83,14 +83,14 @@ export default {
     return {
       constants: [],
       displays: [],
-      elements: [],
+      gates: [],
       conductors: []
     }
   },
   computed: {
     ...mapState({
       nominated: 'nominated',
-      elementsInState: 'elements',
+      gatesInState: 'gates',
       conductorInState: 'conductors'
     })
   },
@@ -136,16 +136,16 @@ export default {
       clearNominated: 'clearNominated',
       pushConstant: 'pushConstant',
       pushDisplay: 'pushDisplay',
-      pushElement: 'pushElement',
+      pushGate: 'pushGate',
       pushConductor: 'pushConductor'
     }),
-    addConstant(value) {
+    addConstant(level) {
       const props = {
-        value: value,
+        level: level,
         key: 'constant_' + (new Date().getTime())
       }
       this.constants.push(props)
-      // $refs.elements can not be initialized until dom updated.
+      // $refs.gates can not be initialized until dom updated.
       // Don't use promise after $nextTick,
       // because can not access component using "this".
       this.$nextTick(function() {
@@ -159,20 +159,20 @@ export default {
     addAND() {
       const props = {
         type: 'AND',
-        key: 'element_' + (new Date().getTime())
+        key: 'gate_' + (new Date().getTime())
       }
-      this.elements.push(props)
+      this.gates.push(props)
       this.$nextTick(function() {
-        const len = this.$refs.elements.length
-        const target = this.$refs.elements[len - 1]
-        this.pushElement({
+        const len = this.$refs.gates.length
+        const target = this.$refs.gates[len - 1]
+        this.pushGate({
           component: target
         })
       })
     },
     addDisplay() {
       const props = {
-        value: -1,
+        level: -1,
         key: 'display_' + (new Date().getTime())
       }
       this.displays.push(props)
@@ -184,8 +184,8 @@ export default {
         })
       })
     },
-    onDraggingElement(element) {
-      const devices = element.getDevices()
+    onDragging(gate) {
+      const devices = gate.getDevices()
       for (const d of devices) {
         const conductors = d.getConductors()
         if (conductors.length === 0) {
