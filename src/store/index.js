@@ -7,7 +7,7 @@ const state = {
   nominated: [],
   constants: [],
   displays: [],
-  elements: [],
+  gates: [],
   conductors: []
 }
 
@@ -21,8 +21,8 @@ const getters = {
   displays (state) {
     return state.displays
   },
-  elements (state) {
-    return state.elements
+  gates (state) {
+    return state.gates
   },
   conductors (state) {
     return state.conductors
@@ -42,8 +42,8 @@ const mutations = {
   pushDisplay (state, payload) {
     state.displays.push(payload.component)
   },
-  pushElement (state, payload) {
-    state.elements.push(payload.component)
+  pushGate (state, payload) {
+    state.gates.push(payload.component)
   },
   pushConductor (state, payload) {
     state.conductors.push(payload.component)
@@ -69,8 +69,8 @@ const actions = {
       component: payload.component
     })
   },
-  pushElement (context, payload) {
-    context.commit('pushElement', {
+  pushGate (context, payload) {
+    context.commit('pushGate', {
       component: payload.component
     })
   },

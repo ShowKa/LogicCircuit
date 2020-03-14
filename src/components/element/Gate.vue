@@ -1,23 +1,23 @@
 <template>
-<div class="element">
+<div class="gate">
   <div>
     <IoDevice
       ref="in1"
       io-type="input"
-      class="element__input element__input--border-bottom"
+      class="gate__input gate__input--border-bottom"
     />
     <IoDevice
       ref="in2"
       io-type="input"
-      class="element__input"
+      class="gate__input"
     />
   </div>
-  <div class="element__center">
-    {{ elementType }}
+  <div class="gate__center">
+    {{ gateType }}
   </div>
   <IoDevice
     ref="out"
-    class="element__output"
+    class="gate__output"
     io-type="output"
   />
 </div>
@@ -29,7 +29,7 @@ export default {
     IoDevice
   },
   props: {
-    elementType: {
+    gateType: {
       type: String,
       required: true,
       default: 'OOO' // unset: out of order
@@ -46,7 +46,7 @@ export default {
 <style lang="scss">
 @import "assets/app";
 @import "./element";
-.element {
+.gate {
     // parameters
     $height: 40px;
     $width: 120px;
