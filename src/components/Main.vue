@@ -15,7 +15,7 @@
 </template>
 <script>
 import AppTitle from './AppTitle.vue'
-import Board from './element/Board.vue'
+import Board from './logic-circuit/Board.vue'
 export default {
   components: {
     AppTitle,

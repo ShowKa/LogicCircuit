@@ -32,7 +32,7 @@ export default {
 </script>
 <style lang="scss">
 @import "assets/app";
-@import "./element";
+@import "./logic-circuit";
 .display {
     // parameters
     $height: 40px;

@@ -45,7 +45,7 @@ export default {
 </script>
 <style lang="scss">
 @import "assets/app";
-@import "./element";
+@import "./logic-circuit";
 .gate {
     // parameters
     $height: 40px;
