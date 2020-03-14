@@ -5,8 +5,8 @@
     class="display__input"
     io-type="input"
   />
-  <div class="display__value">
-    {{ value }}
+  <div class="display__level">
+    {{ level }}
   </div>
 </div>
 </template>
@@ -17,7 +17,7 @@ export default {
     IoDevice
   },
   props: {
-    value: {
+    level: {
       type: Number,
       required: true,
       default: -1
@@ -49,7 +49,7 @@ export default {
         width: $width * (2 /10);
         height: $height;
     }
-    &__value {
+    &__level {
         width: $width * (8 / 10);
         height: $height;
         background-color: $color-border;

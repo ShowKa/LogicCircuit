@@ -1,7 +1,7 @@
 <template>
 <div class="constant">
-  <div class="constant__value">
-    {{ value }}
+  <div class="constant__level">
+    {{ level }}
   </div>
   <IoDevice
     ref="out"
@@ -17,7 +17,7 @@ export default {
     IoDevice
   },
   props: {
-    value: {
+    level: {
       type: Number,
       required: true
     }
@@ -48,7 +48,7 @@ export default {
         width: $width * (2 /10);
         height: $height;
     }
-    &__value {
+    &__level {
         width: $width * (8 / 10);
         height: $height;
         background-color: $color-border;

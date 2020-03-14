@@ -20,7 +20,7 @@
     <Constant
       ref="constants"
       v-draggable
-      :value="constant.value"
+      :level="constant.level"
       @dragging="onDraggingElement"
     />
   </fieldset>
@@ -44,7 +44,7 @@
     <Display
       ref="displays"
       v-draggable
-      :value="display.value"
+      :level="display.level"
       @dragging="onDraggingElement"
     />
   </fieldset>
@@ -139,9 +139,9 @@ export default {
       pushElement: 'pushElement',
       pushConductor: 'pushConductor'
     }),
-    addConstant(value) {
+    addConstant(level) {
       const props = {
-        value: value,
+        level: level,
         key: 'constant_' + (new Date().getTime())
       }
       this.constants.push(props)
@@ -172,7 +172,7 @@ export default {
     },
     addDisplay() {
       const props = {
-        value: -1,
+        level: -1,
         key: 'display_' + (new Date().getTime())
       }
       this.displays.push(props)
