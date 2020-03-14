@@ -9,6 +9,9 @@
   <button @click="addAND">
     AND
   </button>
+  <button @click="addDisplay">
+    display
+  </button>
   <!-- Constant -->
   <fieldset
     v-for="constant in constants"
@@ -33,6 +36,18 @@
       @dragging="onDraggingElement"
     />
   </fieldset>
+  <!-- Display -->
+  <fieldset
+    v-for="display in displays"
+    :key="display.key"
+  >
+    <Display
+      ref="displays"
+      v-draggable
+      :value="display.value"
+      @dragging="onDraggingElement"
+    />
+  </fieldset>
   <!-- Conductor -->
   <fieldset
     v-for="conductor in conductors"
@@ -54,17 +69,20 @@ import {
 } from 'vuex'
 import Element from './Element.vue'
 import Constant from './Constant.vue'
+import Display from './Display.vue'
 import Conductor from './Conductor.vue'
 // component
 export default {
   components: {
     Element,
+    Display,
     Constant,
     Conductor
   },
   data() {
     return {
       constants: [],
+      displays: [],
       elements: [],
       conductors: []
     }
@@ -117,6 +135,7 @@ export default {
     ...mapActions({
       clearNominated: 'clearNominated',
       pushConstant: 'pushConstant',
+      pushDisplay: 'pushDisplay',
       pushElement: 'pushElement',
       pushConductor: 'pushConductor'
     }),
@@ -143,13 +162,24 @@ export default {
         key: 'element_' + (new Date().getTime())
       }
       this.elements.push(props)
-      // $refs.elements can not be initialized until dom updated.
-      // Don't use promise after $nextTick,
-      // because can not access component using "this".
       this.$nextTick(function() {
         const len = this.$refs.elements.length
         const target = this.$refs.elements[len - 1]
         this.pushElement({
+          component: target
+        })
+      })
+    },
+    addDisplay() {
+      const props = {
+        value: -1,
+        key: 'display_' + (new Date().getTime())
+      }
+      this.displays.push(props)
+      this.$nextTick(function() {
+        const len = this.$refs.displays.length
+        const target = this.$refs.displays[len - 1]
+        this.pushDisplay({
           component: target
         })
       })

@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const state = {
   nominated: [],
   constants: [],
+  displays: [],
   elements: [],
   conductors: []
 }
@@ -16,6 +17,9 @@ const getters = {
   },
   constants (state) {
     return state.constants
+  },
+  displays (state) {
+    return state.displays
   },
   elements (state) {
     return state.elements
@@ -34,6 +38,9 @@ const mutations = {
   },
   pushConstant (state, payload) {
     state.constants.push(payload.component)
+  },
+  pushDisplay (state, payload) {
+    state.displays.push(payload.component)
   },
   pushElement (state, payload) {
     state.elements.push(payload.component)
@@ -54,6 +61,11 @@ const actions = {
   },
   pushConstant (context, payload) {
     context.commit('pushConstant', {
+      component: payload.component
+    })
+  },
+  pushDisplay (context, payload) {
+    context.commit('pushDisplay', {
       component: payload.component
     })
   },
