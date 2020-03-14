@@ -1,11 +1,27 @@
 <template>
 <div class="board">
-  <button
-    ref="button"
-    @click="addAND"
-  >
+  <button @click="addConstant(0)">
+    0
+  </button>
+  <button @click="addConstant(1)">
+    1
+  </button>
+  <button @click="addAND">
     AND
   </button>
+  <!-- Constant -->
+  <fieldset
+    v-for="constant in constants"
+    :key="constant.key"
+  >
+    <Constant
+      ref="constants"
+      v-draggable
+      :value="constant.value"
+      @dragging="onDraggingElement"
+    />
+  </fieldset>
+  <!-- Element -->
   <fieldset
     v-for="element in elements"
     :key="element.key"
@@ -17,6 +33,7 @@
       @dragging="onDraggingElement"
     />
   </fieldset>
+  <!-- Conductor -->
   <fieldset
     v-for="conductor in conductors"
     :key="conductor.key"
@@ -36,15 +53,18 @@ import {
   mapActions
 } from 'vuex'
 import Element from './Element.vue'
+import Constant from './Constant.vue'
 import Conductor from './Conductor.vue'
 // component
 export default {
   components: {
     Element,
+    Constant,
     Conductor
   },
   data() {
     return {
+      constants: [],
       elements: [],
       conductors: []
     }
@@ -96,9 +116,27 @@ export default {
   methods: {
     ...mapActions({
       clearNominated: 'clearNominated',
+      pushConstant: 'pushConstant',
       pushElement: 'pushElement',
       pushConductor: 'pushConductor'
     }),
+    addConstant(value) {
+      const props = {
+        value: value,
+        key: 'constant_' + (new Date().getTime())
+      }
+      this.constants.push(props)
+      // $refs.elements can not be initialized until dom updated.
+      // Don't use promise after $nextTick,
+      // because can not access component using "this".
+      this.$nextTick(function() {
+        const len = this.$refs.constants.length
+        const target = this.$refs.constants[len - 1]
+        this.pushConstant({
+          component: target
+        })
+      })
+    },
     addAND() {
       const props = {
         type: 'AND',

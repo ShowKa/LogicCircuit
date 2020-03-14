@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 const state = {
   nominated: [],
+  constants: [],
   elements: [],
   conductors: []
 }
@@ -12,6 +13,9 @@ const state = {
 const getters = {
   nominated (state) {
     return state.nominated
+  },
+  constants (state) {
+    return state.constants
   },
   elements (state) {
     return state.elements
@@ -27,6 +31,9 @@ const mutations = {
   },
   clearNominated (state, payload) {
     state.nominated.length = 0
+  },
+  pushConstant (state, payload) {
+    state.constants.push(payload.component)
   },
   pushElement (state, payload) {
     state.elements.push(payload.component)
@@ -44,6 +51,11 @@ const actions = {
   },
   clearNominated (context, payload) {
     context.commit('clearNominated')
+  },
+  pushConstant (context, payload) {
+    context.commit('pushConstant', {
+      component: payload.component
+    })
   },
   pushElement (context, payload) {
     context.commit('pushElement', {
