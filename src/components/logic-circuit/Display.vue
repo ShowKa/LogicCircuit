@@ -4,9 +4,10 @@
     ref="in"
     class="display__input"
     io-type="input"
+    :belong="this"
   />
   <div class="display__level">
-    {{ level }}
+    {{ output }}
   </div>
 </div>
 </template>
@@ -16,16 +17,23 @@ export default {
   components: {
     IoDevice
   },
-  props: {
-    level: {
-      type: Number,
-      required: true,
-      default: -1
+  props: {},
+  data() {
+    return {
+      output: '?'
     }
   },
   methods: {
     getDevices() {
       return [this.$refs.in]
+    },
+    show() {
+      const device = this.$refs.in
+      if (device.isConnected()) {
+        this.output = device.getOutputLevel()
+      } else {
+        this.output = '?'
+      }
     }
   }
 }

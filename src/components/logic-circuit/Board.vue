@@ -127,6 +127,9 @@ export default {
         const devices = target.devices
         devices[0].pushConductor(target)
         devices[1].pushConductor(target)
+        for (const display of this.$refs.displays) {
+          display.show()
+        }
       })
       this.clearNominated()
     }

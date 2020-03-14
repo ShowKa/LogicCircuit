@@ -7,6 +7,7 @@
     ref="out"
     class="constant__output"
     io-type="output"
+    :belong="this"
   />
 </div>
 </template>
@@ -25,6 +26,9 @@ export default {
   methods: {
     getDevices() {
       return [this.$refs.out]
+    },
+    getOutputLevel() {
+      return this.level
     }
   }
 }
