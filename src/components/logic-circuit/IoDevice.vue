@@ -85,6 +85,9 @@ export default {
     },
     getOutputLevel() {
       if (this.ioType === 'input') {
+        if (this.conductors.length === 0) {
+          return 0
+        }
         const conductor = this.conductors[0]
         return conductor.getOutputLevel()
       }

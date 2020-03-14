@@ -28,7 +28,6 @@ export default {
       return [this.$refs.in]
     },
     show() {
-      // TODO show "?" if not connected
       const device = this.$refs.in
       if (device.isConnected()) {
         this.output = device.getOutputLevel()

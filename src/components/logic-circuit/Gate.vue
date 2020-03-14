@@ -44,8 +44,21 @@ export default {
       return [refs.in1, refs.in2, refs.out]
     },
     getOutputLevel() {
-      // TODO
-      return 1
+      const val1 = this.$refs.in1.getOutputLevel()
+      const val2 = this.$refs.in2.getOutputLevel()
+      return this._calculate(val1, val2)
+    },
+    _calculate(val1, val2) {
+      const _1 = val1 > 0
+      const _2 = val2 > 0
+      switch (this.gateType) {
+        case 'AND':
+          return (_1 && _2) ? 1 : 0
+        case 'OR':
+          return (_1 || _2) ? 1 : 0
+        default:
+          return 0
+      }
     }
   }
 }
