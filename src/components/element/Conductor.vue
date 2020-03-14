@@ -23,19 +23,19 @@ export default {
       type: Number,
       required: true
     },
-    x1: {
+    outputX: {
       type: Number,
       required: true
     },
-    y1: {
+    outputY: {
       type: Number,
       required: true
     },
-    x2: {
+    inputX: {
       type: Number,
       required: true
     },
-    y2: {
+    inputY: {
       type: Number,
       required: true
     },
@@ -47,19 +47,19 @@ export default {
   data() {
     return {
       cood: {
-        x1: this.x1,
-        y1: this.y1,
-        x2: this.x2,
-        y2: this.y2
+        x1: this.outputX,
+        y1: this.outputY,
+        x2: this.inputX,
+        y2: this.inputY
       }
     }
   },
   computed: {
     curvedPath() {
-      const ratio = 0.5
+      const ratio = 0.6
       const cood = this.cood
       // M 10 10 C 20 20, 40 20, 50 10
-      const diffX = cood.x2 - cood.x1
+      const diffX = cood.x2 > cood.x1 ? cood.x2 - cood.x1 : cood.x1 - cood.x2
       const diffY = cood.y2 - cood.y1
       const secX = cood.x1 + (diffX * ratio)
       const secY = cood.y1 + (diffY * ratio)

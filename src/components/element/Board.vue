@@ -66,15 +66,17 @@ export default {
       const rect = this.$el.getBoundingClientRect()
       const io1 = nominated[0]
       const io2 = nominated[1]
-      const cood = this.calCoodOfConductor(io1, io2)
+      const output = io1.ioType === 'output' ? io1 : io2
+      const input = io1.ioType === 'input' ? io1 : io2
+      const cood = this.calCoodOfConductor(output, input)
       const props = {
         height: rect.height,
         width: rect.width,
-        x1: cood.x1,
-        y1: cood.y1,
-        x2: cood.x2,
-        y2: cood.y2,
-        devices: [io1, io2],
+        outputX: cood.x1,
+        outputY: cood.y1,
+        inputX: cood.x2,
+        inputY: cood.y2,
+        devices: [output, input],
         key: 'devices_' + (new Date().getTime())
       }
       this.conductors.push(props)

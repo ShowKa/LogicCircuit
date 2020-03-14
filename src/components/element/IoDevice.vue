@@ -14,6 +14,7 @@ import {
 export default {
   props: {
     ioType: {
+      // only "input" or "output"
       type: String,
       required: true
     }

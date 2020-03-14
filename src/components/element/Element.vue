@@ -57,6 +57,7 @@ export default {
     display: flex;
     outline: $border;
     background-color: $color-base;
+    user-select: none;
     &__input {
         width: $width * (1 /10);
         height: $height / 2;
