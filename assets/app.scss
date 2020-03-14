@@ -1,17 +1,24 @@
+// layout
+
+body,
+html {
+  height: 100%;
+}
+
 // font
 @mixin default-font {
-  font-family: Avenir, "Helvetica Neue", Verdana, Helvetica, Arial, Roboto, YuGothic,"Meiryo UI", メイリオ, Meiryo,"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif
+  font-family: Avenir, "Helvetica Neue", Verdana, Helvetica, Arial, Roboto, YuGothic,"Meiryo UI", メイリオ, Meiryo,"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 
 @mixin text-to-center($height) {
-    text-align: center;
-    vertical-align: middle;
-    line-height: $height;
+  text-align: center;
+  vertical-align: middle;
+  line-height: $height;
 }
 
 // color
 $color-base: #0e83cd;
 $color-border: #f8f8f8;
-@mixin background-color-base{
+@mixin background-color-base {
   background-color: $color-base;
 }

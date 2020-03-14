@@ -1,23 +1,11 @@
 <template>
-<div class="element">
-  <div>
-    <IoDevice
-      ref="in1"
-      io-type="input"
-      class="element__input element__input--border-bottom"
-    />
-    <IoDevice
-      ref="in2"
-      io-type="input"
-      class="element__input"
-    />
-  </div>
-  <div class="element__center">
-    {{ elementType }}
+<div class="constant">
+  <div class="constant__value">
+    {{ value }}
   </div>
   <IoDevice
     ref="out"
-    class="element__output"
+    class="constant__output"
     io-type="output"
   />
 </div>
@@ -29,16 +17,14 @@ export default {
     IoDevice
   },
   props: {
-    elementType: {
-      type: String,
-      required: true,
-      default: 'OOO' // unset: out of order
+    value: {
+      type: Number,
+      required: true
     }
   },
   methods: {
     getDevices() {
-      const refs = this.$refs
-      return [refs.in1, refs.in2, refs.out]
+      return [this.$refs.out]
     }
   }
 }
@@ -46,10 +32,10 @@ export default {
 <style lang="scss">
 @import "assets/app";
 @import "./element";
-.element {
+.constant {
     // parameters
     $height: 40px;
-    $width: 120px;
+    $width: 58px;
     $border: 1px solid $color-border;
     // style
     width: $width;
@@ -58,18 +44,11 @@ export default {
     outline: $border;
     background-color: $color-base;
     user-select: none;
-    &__input {
-        width: $width * (1 /10);
-        height: $height / 2;
-        &--border-bottom {
-            border-bottom: $border;
-        }
-    }
     &__output {
-        width: $width * (1 /10);
+        width: $width * (2 /10);
         height: $height;
     }
-    &__center {
+    &__value {
         width: $width * (8 / 10);
         height: $height;
         background-color: $color-border;
