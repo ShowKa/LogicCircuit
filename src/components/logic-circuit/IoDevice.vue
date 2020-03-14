@@ -17,13 +17,17 @@ export default {
       // only "input" or "output"
       type: String,
       required: true
+    },
+    belong: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
       setOnBoard: true,
       acceptable: false,
-      conductor: []
+      conductors: []
     }
   },
   computed: {
@@ -74,10 +78,20 @@ export default {
       this.acceptable = true
     },
     pushConductor(conductor) {
-      this.conductor.push(conductor)
+      this.conductors.push(conductor)
     },
-    getConductors(conductor) {
-      return this.conductor
+    getConductors() {
+      return this.conductors
+    },
+    getOutputLevel() {
+      if (this.ioType === 'input') {
+        const conductor = this.conductors[0]
+        return conductor.getOutputLevel()
+      }
+      return this.belong.getOutputLevel()
+    },
+    isConnected() {
+      return this.conductors.length > 0
     }
   }
 }

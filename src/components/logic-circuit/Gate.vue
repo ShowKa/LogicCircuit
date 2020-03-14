@@ -5,11 +5,13 @@
       ref="in1"
       io-type="input"
       class="gate__input gate__input--border-bottom"
+      :belong="this"
     />
     <IoDevice
       ref="in2"
       io-type="input"
       class="gate__input"
+      :belong="this"
     />
   </div>
   <div class="gate__center">
@@ -19,6 +21,7 @@
     ref="out"
     class="gate__output"
     io-type="output"
+    :belong="this"
   />
 </div>
 </template>
@@ -39,6 +42,10 @@ export default {
     getDevices() {
       const refs = this.$refs
       return [refs.in1, refs.in2, refs.out]
+    },
+    getOutputLevel() {
+      // TODO
+      return 1
     }
   }
 }

@@ -74,6 +74,14 @@ export default {
       this.cood.y1 = y1
       this.cood.x2 = x2
       this.cood.y2 = y2
+    },
+    getOutputLevel() {
+      for (const device of this.devices) {
+        if (device.ioType === 'output') {
+          return device.getOutputLevel()
+        }
+      }
+      return -1
     }
   }
 }
