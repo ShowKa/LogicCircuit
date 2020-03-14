@@ -51,7 +51,8 @@ export default {
         y1: this.outputY,
         x2: this.inputX,
         y2: this.inputY
-      }
+      },
+      level: 0
     }
   },
   computed: {
@@ -75,13 +76,16 @@ export default {
       this.cood.x2 = x2
       this.cood.y2 = y2
     },
-    getOutputLevel() {
+    getLevel() {
+      return this.level
+    },
+    transmit(level) {
+      this.level = level
       for (const device of this.devices) {
-        if (device.ioType === 'output') {
-          return device.getOutputLevel()
+        if (device.isInput()) {
+          device.transmit(level)
         }
       }
-      return -1
     }
   }
 }

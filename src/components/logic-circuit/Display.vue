@@ -7,7 +7,7 @@
     :belong="this"
   />
   <div class="display__level">
-    {{ output }}
+    {{ level }}
   </div>
 </div>
 </template>
@@ -17,23 +17,18 @@ export default {
   components: {
     IoDevice
   },
-  props: {},
   data() {
     return {
-      output: '?'
+      level: 0
     }
   },
   methods: {
     getDevices() {
       return [this.$refs.in]
     },
-    show() {
-      const device = this.$refs.in
-      if (device.isConnected()) {
-        this.output = device.getOutputLevel()
-      } else {
-        this.output = '?'
-      }
+    transmit(level) {
+      // just set level
+      this.level = level
     }
   }
 }

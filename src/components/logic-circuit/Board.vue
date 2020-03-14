@@ -6,8 +6,11 @@
   <button @click="addConstant(1)">
     1
   </button>
-  <button @click="addAND">
+  <button @click="addGate('AND')">
     AND
+  </button>
+  <button @click="addGate('OR')">
+    OR
   </button>
   <button @click="addDisplay">
     display
@@ -104,8 +107,8 @@ export default {
       const rect = this.$el.getBoundingClientRect()
       const io1 = nominated[0]
       const io2 = nominated[1]
-      const output = io1.ioType === 'output' ? io1 : io2
-      const input = io1.ioType === 'input' ? io1 : io2
+      const output = io1.isOutput() ? io1 : io2
+      const input = io1.isInput() ? io1 : io2
       const cood = this.calCoodOfConductor(output, input)
       const props = {
         height: rect.height,
@@ -127,8 +130,10 @@ export default {
         const devices = target.devices
         devices[0].pushConductor(target)
         devices[1].pushConductor(target)
-        for (const display of this.$refs.displays) {
-          display.show()
+        for (const device of devices) {
+          if (device.isOutput()) {
+            target.transmit(device.getLevel())
+          }
         }
       })
       this.clearNominated()
@@ -159,9 +164,9 @@ export default {
         })
       })
     },
-    addAND() {
+    addGate(gateType) {
       const props = {
-        type: 'AND',
+        type: gateType,
         key: 'gate_' + (new Date().getTime())
       }
       this.gates.push(props)

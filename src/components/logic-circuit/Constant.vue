@@ -23,12 +23,18 @@ export default {
       required: true
     }
   },
+  // transmit level to device after this instance mounted to Vue.
+  // Because the device is always LOW/0 when initialization.
+  mounted() {
+    this.transmit()
+  },
   methods: {
     getDevices() {
       return [this.$refs.out]
     },
-    getOutputLevel() {
-      return this.level
+    transmit() {
+      const out = this.$refs.out
+      out.transmit(this.level)
     }
   }
 }

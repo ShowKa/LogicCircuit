@@ -38,19 +38,30 @@ export default {
       default: 'OOO' // unset: out of order
     }
   },
+  data() {
+    return {
+      level: 0
+    }
+  },
   methods: {
     getDevices() {
       const refs = this.$refs
       return [refs.in1, refs.in2, refs.out]
     },
-    getOutputLevel() {
-      const val1 = this.$refs.in1.getOutputLevel()
-      const val2 = this.$refs.in2.getOutputLevel()
-      return this._calculate(val1, val2)
+    transmit() {
+      // calculate level
+      const level1 = this.$refs.in1.getLevel()
+      const level2 = this.$refs.in2.getLevel()
+      const level = this._calculate(level1, level2)
+      // update this level
+      this.level = level
+      // transtmi
+      const output = this.$refs.out
+      output.transmit(this.level)
     },
-    _calculate(val1, val2) {
-      const _1 = val1 > 0
-      const _2 = val2 > 0
+    _calculate(level1, level2) {
+      const _1 = level1 > 0
+      const _2 = level2 > 0
       switch (this.gateType) {
         case 'AND':
           return (_1 && _2) ? 1 : 0

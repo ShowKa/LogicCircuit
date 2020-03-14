@@ -27,6 +27,7 @@ export default {
     return {
       setOnBoard: true,
       acceptable: false,
+      level: 0,
       conductors: []
     }
   },
@@ -83,18 +84,49 @@ export default {
     getConductors() {
       return this.conductors
     },
-    getOutputLevel() {
-      if (this.ioType === 'input') {
-        if (this.conductors.length === 0) {
-          return 0
+    getLevel() {
+      return this.level
+    },
+    transmit(level) {
+      const oldLevel = this.level
+      // input -> transmit to belonging
+      if (this.isInput()) {
+        // update level
+        if (level === 1) {
+          this.level = level
+        } else {
+          // when transmitted 1 from other conductor then transmit 1,
+          // even if argument's level is 0
+          var sombodyIsHigh = false
+          for (const conductor of this.conductors) {
+            if (conductor.getLevel() > 0) {
+              sombodyIsHigh = true
+              break
+            }
+          }
+          this.level = sombodyIsHigh ? 1 : 0
         }
-        const conductor = this.conductors[0]
-        return conductor.getOutputLevel()
+        if (oldLevel === this.level) {
+          return
+        }
+        // transmit
+        this.belong.transmit(this.level)
+        return
       }
-      return this.belong.getOutputLevel()
+      // output -> transmit to conductors
+      this.level = level
+      for (const conductor of this.conductors) {
+        conductor.transmit(this.level)
+      }
     },
     isConnected() {
       return this.conductors.length > 0
+    },
+    isInput() {
+      return this.ioType === 'input'
+    },
+    isOutput() {
+      return this.ioType === 'output'
     }
   }
 }
