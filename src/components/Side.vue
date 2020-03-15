@@ -1,5 +1,5 @@
 <template>
-<div class="side">
+<div class="side h-100">
   <Palette />
 </div>
 </template>
@@ -12,4 +12,7 @@ export default {
 }
 </script>
 <style lang="scss" >
+.side {
+    min-width: 110px;
+}
 </style>

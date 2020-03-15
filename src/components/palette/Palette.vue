@@ -1,5 +1,5 @@
 <template>
-<div class="pallete row">
+<div class="pallete row h-100">
   <div class="col-12">
     <Section />
   </div>
@@ -14,7 +14,8 @@ export default {
 }
 </script>
 <style lang="scss" >
+@import 'assets/app.scss';
 .pallete {
-    border: 1px solid red;
+    background-color: lighten($color-split-complementary-1, 20%);
 }
 </style>

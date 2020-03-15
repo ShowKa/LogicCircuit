@@ -7,10 +7,10 @@
     </div>
   </div>
   <div class="field__body row h-100 ">
-    <div class="col-2">
+    <div class="col-auto">
       <Side />
     </div>
-    <div class="col-10 ">
+    <div class="col">
       <Main />
     </div>
   </div>
@@ -29,9 +29,15 @@ export default {
 }
 </script>
 <style lang="scss">
+@import 'assets/app.scss';
 .field {
+    &__header {
+        // background-image: url("/static/img/grid.png");
+        background-color: lighten($color-split-complementary-2, 20%);
+    }
     &__body {
-        background-image: url("/static/img/grid.png");
+        // background-image: url("/static/img/grid.png");
+        background-color: $color-base;
     }
 }
 </style>

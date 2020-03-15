@@ -132,9 +132,10 @@ export default {
 }
 </script>
 <style lang="scss">
+@import "assets/app";
 .io-device {
     &__acceptable {
-        background-color: red;
+        background-color: $color-split-complementary-2;
     }
 }
 </style>

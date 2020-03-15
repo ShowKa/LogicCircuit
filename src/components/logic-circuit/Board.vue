@@ -1,5 +1,6 @@
 <template>
 <div class="board">
+  <!--
   <button @click="addConstant(0)">
     0
   </button>
@@ -15,6 +16,7 @@
   <button @click="addDisplay">
     display
   </button>
+  -->
   <!-- Constant -->
   <fieldset
     v-for="constant in constants"
@@ -244,7 +246,7 @@ export default {
 .board {
     height: 100%;
     width: 100%;
-    background-image: url("/static/img/grid.png");
+    // background-image: url("/static/img/grid.png");
     position: relative;
     top: 0;
     left: 0;
