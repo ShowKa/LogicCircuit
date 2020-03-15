@@ -1,48 +1,79 @@
 <template>
 <div class="section">
   <div class="section__box">
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Display />
+        <Display
+          v-cloneable
+          class="section__element"
+        />
       </div>
     </div>
   </div>
   <div class="section__box">
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Constant :level="0" />
+        <Constant
+          v-cloneable
+          class="section__element"
+          :level="0"
+        />
       </div>
     </div>
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Constant :level="1" />
+        <Constant
+          v-cloneable
+          class="section__element"
+          :level="1"
+        />
       </div>
     </div>
   </div>
   <div class="section__box">
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Gate gate-type="AND" />
+        <Gate
+          v-cloneable
+          class="section__element"
+          gate-type="AND"
+        />
       </div>
     </div>
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Gate gate-type="OR" />
+        <Gate
+          v-cloneable
+          class="section__element"
+          gate-type="OR"
+        />
       </div>
     </div>
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Gate gate-type="NAND" />
+        <Gate
+          v-cloneable
+          class="section__element"
+          gate-type="NAND"
+        />
       </div>
     </div>
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Gate gate-type="NOR" />
+        <Gate
+          v-cloneable
+          class="section__element"
+          gate-type="NOR"
+        />
       </div>
     </div>
-    <div class="section__row row justify-content-center">
+    <div class="section__row row">
       <div class="column">
-        <Gate gate-type="XOR" />
+        <Gate
+          v-cloneable
+          class="section__element"
+          gate-type="XOR"
+        />
       </div>
     </div>
   </div>
@@ -62,12 +93,15 @@ export default {
 </script>
 <style lang="scss" >
 .section {
-    // border: 1px solid yellow;
     &__box {
-        margin-top: 25px;
+        margin-top: 35px;
     }
     &__row {
         margin-top: 10px;
+        position: relative;
+    }
+    &__element {
+        left: 10px;
     }
 }
 </style>

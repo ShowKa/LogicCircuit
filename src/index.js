@@ -9,6 +9,42 @@ import 'bootstrap'
 // スタイルシート
 import './index.scss'
 
+Vue.directive('cloneable', {
+  bind: function (el, binding, vnode) {
+    el.style.position = 'relative'
+    var startX, startY, initialMouseX, initialMouseY
+    const component = vnode.componentInstance
+    // move
+    function mousemove (e) {
+      const dx = e.clientX - initialMouseX
+      const dy = e.clientY - initialMouseY
+      var top = startY + dy
+      var left = startX + dx
+      el.style.top = top + 'px'
+      el.style.left = left + 'px'
+      component.$emit('dragging', component)
+      return false
+    }
+    // up
+    function mouseup () {
+      el.style.top = startY + 'px'
+      el.style.left = startX + 'px'
+      document.removeEventListener('mousemove', mousemove)
+      document.removeEventListener('mouseup', mouseup)
+    }
+    // down
+    el.addEventListener('mousedown', function (e) {
+      startX = el.offsetLeft
+      startY = el.offsetTop
+      initialMouseX = e.clientX
+      initialMouseY = e.clientY
+      document.addEventListener('mousemove', mousemove)
+      document.addEventListener('mouseup', mouseup)
+      return false
+    })
+  }
+})
+
 Vue.directive('draggable', {
   bind: function (el, binding, vnode) {
     el.style.position = 'absolute'
