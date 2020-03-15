@@ -67,6 +67,12 @@ export default {
           return (_1 && _2) ? 1 : 0
         case 'OR':
           return (_1 || _2) ? 1 : 0
+        case 'NAND':
+          return !(_1 && _2) ? 1 : 0
+        case 'NOR':
+          return !(_1 || _2) ? 1 : 0
+        case 'XOR':
+          return (_1 && !_2) || (!_1 && _2) ? 1 : 0
         default:
           return 0
       }
