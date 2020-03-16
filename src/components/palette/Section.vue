@@ -37,51 +37,21 @@
     </fieldset>
   </div>
   <div class="section__box">
-    <div class="section__row row">
-      <div class="column">
-        <Gate
-          v-cloneable
-          class="section__element"
-          gate-type="AND"
-        />
+    <fieldset
+      v-for="target in gates"
+      :key="target.key"
+    >
+      <div class="section__row row">
+        <div class="column">
+          <Gate
+            v-cloneable
+            class="section__element"
+            :gate-type="target.type"
+            @drop="onDropGate"
+          />
+        </div>
       </div>
-    </div>
-    <div class="section__row row">
-      <div class="column">
-        <Gate
-          v-cloneable
-          class="section__element"
-          gate-type="OR"
-        />
-      </div>
-    </div>
-    <div class="section__row row">
-      <div class="column">
-        <Gate
-          v-cloneable
-          class="section__element"
-          gate-type="NAND"
-        />
-      </div>
-    </div>
-    <div class="section__row row">
-      <div class="column">
-        <Gate
-          v-cloneable
-          class="section__element"
-          gate-type="NOR"
-        />
-      </div>
-    </div>
-    <div class="section__row row">
-      <div class="column">
-        <Gate
-          v-cloneable
-          class="section__element"
-          gate-type="XOR"
-        />
-      </div>
-    </div>
+    </fieldset>
   </div>
 </div>
 </template>
@@ -113,16 +83,38 @@ export default {
       key: 'constant_1_' + new Date().getTime(),
       level: 1
     }
+    const and = {
+      key: 'gate_and_' + new Date().getTime(),
+      type: 'AND'
+    }
+    const or = {
+      key: 'gate_or_' + new Date().getTime(),
+      type: 'OR'
+    }
+    const nand = {
+      key: 'gate_nand_' + new Date().getTime(),
+      type: 'NAND'
+    }
+    const nor = {
+      key: 'gate_nor_' + new Date().getTime(),
+      type: 'NOR'
+    }
+    const xor = {
+      key: 'gate_xor_' + new Date().getTime(),
+      type: 'XOR'
+    }
     // data object
     return {
       displays: [display],
-      constants: [constant0, constant1]
+      constants: [constant0, constant1],
+      gates: [and, or, nand, nor, xor]
     }
   },
   methods: {
     ...mapActions({
       pushDroppedDisplay: 'pushDroppedDisplay',
-      pushDroppedConstant: 'pushDroppedConstant'
+      pushDroppedConstant: 'pushDroppedConstant',
+      pushDroppedGate: 'pushDroppedGate'
     }),
     onDropDisplay(display) {
       // push to Boad
@@ -156,6 +148,28 @@ export default {
             // remove and insert
             this.constants.splice(i, 1)
             this.constants.splice(i, 0, newComponent)
+            break
+          }
+        }
+      })
+    },
+    onDropGate(gate) {
+      const type = gate.gateType
+      // push to Boad
+      this.pushDroppedGate({
+        component: gate
+      })
+      // clone
+      this.$nextTick(function() {
+        const newComponent = {
+          key: `gate_${type}_` + new Date().getTime(),
+          type: type
+        }
+        for (var i = 0; i < this.gates.length; i++) {
+          if (this.gates[i].type === type) {
+            // remove and insert
+            this.gates.splice(i, 1)
+            this.gates.splice(i, 0, newComponent)
             break
           }
         }

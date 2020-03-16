@@ -11,7 +11,8 @@ const state = {
   conductors: [],
   // dropped
   droppedDisplays: [],
-  droppedConstants: []
+  droppedConstants: [],
+  droppedGates: []
 }
 
 const getters = {
@@ -36,6 +37,9 @@ const getters = {
   },
   droppedConstants (state) {
     return state.droppedConstants
+  },
+  droppedGates (state) {
+    return state.droppedGates
   }
 }
 
@@ -70,6 +74,12 @@ const mutations = {
   },
   clearDroppedConstants (state, payload) {
     state.droppedConstants.length = 0
+  },
+  pushDroppedGate (state, payload) {
+    state.droppedGates.push(payload.component)
+  },
+  clearDroppedGates (state, payload) {
+    state.droppedGates.length = 0
   }
 }
 
@@ -118,6 +128,14 @@ const actions = {
   },
   clearDroppedConstants (context, payload) {
     context.commit('clearDroppedConstants')
+  },
+  pushDroppedGate (context, payload) {
+    context.commit('pushDroppedGate', {
+      component: payload.component
+    })
+  },
+  clearDroppedGates (context, payload) {
+    context.commit('clearDroppedGates')
   }
 }
 

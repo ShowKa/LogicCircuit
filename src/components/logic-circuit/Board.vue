@@ -1,11 +1,5 @@
 <template>
 <div class="board">
-  <button @click="addGate('AND')">
-    AND
-  </button>
-  <button @click="addGate('OR')">
-    OR
-  </button>
   <!-- Constant -->
   <fieldset
     v-for="constant in constants"
@@ -88,7 +82,8 @@ export default {
       conductorInState: 'conductors',
       // dropped
       droppedDisplays: 'droppedDisplays',
-      droppedConstants: 'droppedConstants'
+      droppedConstants: 'droppedConstants',
+      droppedGates: 'droppedGates'
     })
   },
   watch: {
@@ -114,6 +109,26 @@ export default {
         })
       })
       this.clearDroppedConstants()
+    },
+    droppedGates(newValue, oldValue) {
+      // add new component into Board
+      const gate = newValue[0]
+      this.gates.push({
+        type: gate.gateType,
+        key: 'gate_' + new Date().getTime()
+      })
+      // position
+      const coord = this.getCoordsRelativeToBoard(gate.$el)
+      this.$nextTick(function() {
+        const components = this.$refs.gates
+        const target = components[components.length - 1]
+        target.$el.style.left = coord.left + 'px'
+        target.$el.style.top = coord.top + 'px'
+        this.pushGate({
+          component: target
+        })
+      })
+      this.clearDroppedGates()
     },
     droppedDisplays(newValue, oldValue) {
       // add new component into Board
@@ -184,22 +199,9 @@ export default {
       pushGate: 'pushGate',
       pushConductor: 'pushConductor',
       clearDroppedDisplays: 'clearDroppedDisplays',
-      clearDroppedConstants: 'clearDroppedConstants'
+      clearDroppedConstants: 'clearDroppedConstants',
+      clearDroppedGates: 'clearDroppedGates'
     }),
-    addGate(gateType) {
-      const props = {
-        type: gateType,
-        key: 'gate_' + (new Date().getTime())
-      }
-      this.gates.push(props)
-      this.$nextTick(function() {
-        const len = this.$refs.gates.length
-        const target = this.$refs.gates[len - 1]
-        this.pushGate({
-          component: target
-        })
-      })
-    },
     onDragging(gate) {
       const devices = gate.getDevices()
       for (const d of devices) {
