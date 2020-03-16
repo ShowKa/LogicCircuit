@@ -1,6 +1,5 @@
 <template>
 <div class="board">
-  <!--
   <button @click="addConstant(0)">
     0
   </button>
@@ -13,10 +12,6 @@
   <button @click="addGate('OR')">
     OR
   </button>
-  <button @click="addDisplay">
-    display
-  </button>
-  -->
   <!-- Constant -->
   <fieldset
     v-for="constant in constants"
@@ -96,10 +91,32 @@ export default {
     ...mapState({
       nominated: 'nominated',
       gatesInState: 'gates',
-      conductorInState: 'conductors'
+      conductorInState: 'conductors',
+      // dropped
+      droppedDisplays: 'droppedDisplays'
     })
   },
   watch: {
+    droppedDisplays(newValue, oldValue) {
+      // add new component into Board
+      const display = newValue[0]
+      this.displays.push({
+        level: display.level,
+        key: 'display_' + new Date().getTime()
+      })
+      // position
+      const coord = this.getCoordsRelativeToBoard(display.$el)
+      this.$nextTick(function() {
+        const components = this.$refs.displays
+        const target = components[components.length - 1]
+        target.$el.style.left = coord.left + 'px'
+        target.$el.style.top = coord.top + 'px'
+        this.pushDisplay({
+          component: target
+        })
+      })
+      this.clearDroppedDisplay()
+    },
     nominated(newValue, oldValue) {
       const nominated = newValue
       if (nominated.length < 2) {
@@ -111,7 +128,7 @@ export default {
       const io2 = nominated[1]
       const output = io1.isOutput() ? io1 : io2
       const input = io1.isInput() ? io1 : io2
-      const cood = this.calCoodOfConductor(output, input)
+      const cood = this._calCoodOfConductor(output, input)
       const props = {
         height: rect.height,
         width: rect.width,
@@ -147,7 +164,8 @@ export default {
       pushConstant: 'pushConstant',
       pushDisplay: 'pushDisplay',
       pushGate: 'pushGate',
-      pushConductor: 'pushConductor'
+      pushConductor: 'pushConductor',
+      clearDroppedDisplay: 'clearDroppedDisplay'
     }),
     addConstant(level) {
       const props = {
@@ -180,20 +198,6 @@ export default {
         })
       })
     },
-    addDisplay() {
-      const props = {
-        level: -1,
-        key: 'display_' + (new Date().getTime())
-      }
-      this.displays.push(props)
-      this.$nextTick(function() {
-        const len = this.$refs.displays.length
-        const target = this.$refs.displays[len - 1]
-        this.pushDisplay({
-          component: target
-        })
-      })
-    },
     onDragging(gate) {
       const devices = gate.getDevices()
       for (const d of devices) {
@@ -205,13 +209,21 @@ export default {
           const bothDev = conductor.devices
           const io1 = bothDev[0]
           const io2 = bothDev[1]
-          const cood = this.calCoodOfConductor(io1, io2)
+          const cood = this._calCoodOfConductor(io1, io2)
           conductor.updateCood(cood.x1, cood.y1, cood.x2, cood.y2)
         }
       }
     },
+    getCoordsRelativeToBoard(elem) {
+      const position = this._getCoords(elem)
+      const posOfBoard = this._getCoords(this.$el)
+      return {
+        left: position.left - posOfBoard.left,
+        top: position.top - posOfBoard.top
+      }
+    },
     // crossbrowser version
-    getCoords(elem) {
+    _getCoords(elem) {
       const box = elem.getBoundingClientRect()
       const body = document.body
       const docEl = document.documentElement
@@ -226,17 +238,16 @@ export default {
         left: Math.round(left)
       }
     },
-    calCoodOfConductor(io1, io2) {
-      const pos1 = this.getCoords(io1.$el)
-      const pos2 = this.getCoords(io2.$el)
-      const posOfBoard = this.getCoords(this.$el)
+    _calCoodOfConductor(io1, io2) {
+      const pos1 = this.getCoordsRelativeToBoard(io1.$el)
+      const pos2 = this.getCoordsRelativeToBoard(io2.$el)
       const rect1 = io1.$el.getBoundingClientRect()
       const rect2 = io2.$el.getBoundingClientRect()
       return {
-        x1: pos1.left - posOfBoard.left + rect1.width / 2,
-        y1: pos1.top - posOfBoard.top + rect1.height / 2,
-        x2: pos2.left - posOfBoard.left + rect2.width / 2,
-        y2: pos2.top - posOfBoard.top + rect2.height / 2
+        x1: pos1.left + rect1.width / 2,
+        y1: pos1.top + rect1.height / 2,
+        x2: pos2.left + rect2.width / 2,
+        y2: pos2.top + rect2.height / 2
       }
     }
   }

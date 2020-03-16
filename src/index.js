@@ -22,18 +22,19 @@ Vue.directive('cloneable', {
       var left = startX + dx
       el.style.top = top + 'px'
       el.style.left = left + 'px'
-      component.$emit('dragging', component)
       return false
     }
     // up
     function mouseup () {
-      el.style.top = startY + 'px'
-      el.style.left = startX + 'px'
+      component.$emit('drop', component)
+      // el.style.top = startY + 'px'
+      // el.style.left = startX + 'px'
       document.removeEventListener('mousemove', mousemove)
       document.removeEventListener('mouseup', mouseup)
     }
     // down
     el.addEventListener('mousedown', function (e) {
+      component.$emit('startDragging', component)
       startX = el.offsetLeft
       startY = el.offsetTop
       initialMouseX = e.clientX

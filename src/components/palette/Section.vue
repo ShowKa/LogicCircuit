@@ -3,10 +3,20 @@
   <div class="section__box">
     <div class="section__row row">
       <div class="column">
-        <Display
-          v-cloneable
-          class="section__element"
-        />
+        <!-- Display -->
+        <fieldset
+          v-for="display in displays"
+          :key="display.key"
+        >
+          <Display
+            ref="displays"
+            v-cloneable
+            :level="display.level"
+            class="section__element"
+            @drop="onDropDisplay"
+            @startDragging="onStartDragging"
+          />
+        </fieldset>
       </div>
     </div>
   </div>
@@ -80,6 +90,10 @@
 </div>
 </template>
 <script>
+import {
+  // mapState,
+  mapActions
+} from 'vuex'
 import Gate from '../logic-circuit/Gate.vue'
 import Constant from '../logic-circuit/Constant.vue'
 import Display from '../logic-circuit/Display.vue'
@@ -88,6 +102,36 @@ export default {
     Gate,
     Constant,
     Display
+  },
+  data() {
+    return {
+      displays: [{
+        key: 'display_' + new Date().getTime(),
+        level: 0
+      }]
+    }
+  },
+  methods: {
+    ...mapActions({
+      pushDroppedDisplay: 'pushDroppedDisplay',
+      clearDroppedDisplay: 'clearDroppedDisplay'
+    }),
+    onDropDisplay(display) {
+      // push to Boad
+      this.pushDroppedDisplay({
+        component: display
+      })
+      this.$nextTick(function() {
+        this.displays.length = 0
+        // clone
+        const newDisplay = {
+          key: 'display_' + new Date().getTime(),
+          level: 0
+        }
+        this.displays.push(newDisplay)
+      })
+    },
+    onStartDragging(element) {}
   }
 }
 </script>

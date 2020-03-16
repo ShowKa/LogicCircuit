@@ -25,7 +25,8 @@ export default {
     Main,
     Side,
     AppTitle
-  }
+  },
+  methods: {}
 }
 </script>
 <style lang="scss">
