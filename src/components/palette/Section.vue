@@ -9,7 +9,6 @@
           :key="display.key"
         >
           <Display
-            ref="displays"
             v-cloneable
             :level="display.level"
             class="section__element"
@@ -21,24 +20,21 @@
     </div>
   </div>
   <div class="section__box">
-    <div class="section__row row">
-      <div class="column">
-        <Constant
-          v-cloneable
-          class="section__element"
-          :level="0"
-        />
+    <fieldset
+      v-for="target in constants"
+      :key="target.key"
+    >
+      <div class="section__row row">
+        <div class="column">
+          <Constant
+            v-cloneable
+            class="section__element"
+            :level="target.level"
+            @drop="onDropConstant"
+          />
+        </div>
       </div>
-    </div>
-    <div class="section__row row">
-      <div class="column">
-        <Constant
-          v-cloneable
-          class="section__element"
-          :level="1"
-        />
-      </div>
-    </div>
+    </fieldset>
   </div>
   <div class="section__box">
     <div class="section__row row">
@@ -104,17 +100,29 @@ export default {
     Display
   },
   data() {
+    // values for data
+    const display = {
+      key: 'display_' + new Date().getTime(),
+      level: 0
+    }
+    const constant0 = {
+      key: 'constant_0_' + new Date().getTime(),
+      level: 0
+    }
+    const constant1 = {
+      key: 'constant_1_' + new Date().getTime(),
+      level: 1
+    }
+    // data object
     return {
-      displays: [{
-        key: 'display_' + new Date().getTime(),
-        level: 0
-      }]
+      displays: [display],
+      constants: [constant0, constant1]
     }
   },
   methods: {
     ...mapActions({
       pushDroppedDisplay: 'pushDroppedDisplay',
-      clearDroppedDisplay: 'clearDroppedDisplay'
+      pushDroppedConstant: 'pushDroppedConstant'
     }),
     onDropDisplay(display) {
       // push to Boad
@@ -131,7 +139,29 @@ export default {
         this.displays.push(newDisplay)
       })
     },
-    onStartDragging(element) {}
+    onDropConstant(constant) {
+      const level = constant.level
+      // push to Boad
+      this.pushDroppedConstant({
+        component: constant
+      })
+      // clone
+      this.$nextTick(function() {
+        const newComponent = {
+          key: `display_${level}_` + new Date().getTime(),
+          level: level
+        }
+        for (var i = 0; i < this.constants.length; i++) {
+          if (this.constants[i].level === level) {
+            // remove and insert
+            this.constants.splice(i, 1)
+            this.constants.splice(i, 0, newComponent)
+            break
+          }
+        }
+      })
+    },
+    onStartDragging(component) {}
   }
 }
 </script>

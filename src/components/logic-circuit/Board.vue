@@ -1,11 +1,5 @@
 <template>
 <div class="board">
-  <button @click="addConstant(0)">
-    0
-  </button>
-  <button @click="addConstant(1)">
-    1
-  </button>
   <button @click="addGate('AND')">
     AND
   </button>
@@ -93,10 +87,34 @@ export default {
       gatesInState: 'gates',
       conductorInState: 'conductors',
       // dropped
-      droppedDisplays: 'droppedDisplays'
+      droppedDisplays: 'droppedDisplays',
+      droppedConstants: 'droppedConstants'
     })
   },
   watch: {
+    droppedConstants(newValue, oldValue) {
+      // add new component into Board
+      const constant = newValue[0]
+      this.constants.push({
+        level: constant.level,
+        key: 'constant_' + new Date().getTime()
+      })
+      // position
+      const coord = this.getCoordsRelativeToBoard(constant.$el)
+      // $refs.constants can not be initialized until dom updated.
+      // Don't use promise after $nextTick,
+      // because can not access component using "this".
+      this.$nextTick(function() {
+        const components = this.$refs.constants
+        const target = components[components.length - 1]
+        target.$el.style.left = coord.left + 'px'
+        target.$el.style.top = coord.top + 'px'
+        this.pushConstant({
+          component: target
+        })
+      })
+      this.clearDroppedConstants()
+    },
     droppedDisplays(newValue, oldValue) {
       // add new component into Board
       const display = newValue[0]
@@ -115,7 +133,7 @@ export default {
           component: target
         })
       })
-      this.clearDroppedDisplay()
+      this.clearDroppedDisplays()
     },
     nominated(newValue, oldValue) {
       const nominated = newValue
@@ -165,25 +183,9 @@ export default {
       pushDisplay: 'pushDisplay',
       pushGate: 'pushGate',
       pushConductor: 'pushConductor',
-      clearDroppedDisplay: 'clearDroppedDisplay'
+      clearDroppedDisplays: 'clearDroppedDisplays',
+      clearDroppedConstants: 'clearDroppedConstants'
     }),
-    addConstant(level) {
-      const props = {
-        level: level,
-        key: 'constant_' + (new Date().getTime())
-      }
-      this.constants.push(props)
-      // $refs.gates can not be initialized until dom updated.
-      // Don't use promise after $nextTick,
-      // because can not access component using "this".
-      this.$nextTick(function() {
-        const len = this.$refs.constants.length
-        const target = this.$refs.constants[len - 1]
-        this.pushConstant({
-          component: target
-        })
-      })
-    },
     addGate(gateType) {
       const props = {
         type: gateType,
