@@ -8,6 +8,13 @@ import '../assets/app.scss'
 import 'bootstrap'
 // スタイルシート
 import './index.scss'
+// debug tool: run following command!
+// ./node_modules/.bin/vue-devtools
+import devtools from '@vue/devtools'
+
+if (process.env.DEBUG) {
+  devtools.connect('localhost', '8098')
+}
 
 Vue.directive('draggable', {
   bind: function (el, binding, vnode) {
