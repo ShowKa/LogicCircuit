@@ -7,6 +7,7 @@
     "test": "jest --config test/jest.config.js",
     "build": "webpack --config build/webpack.config.dev.js",
     "dev": "webpack-dev-server --config build/webpack.config.dev.js",
+    "dev:debug": "webpack-dev-server --config build/webpack.config.debug.js",
     "lint": "eslint --ext .js,.vue src",
     "lint:fix": "eslint --ext .js,.vue src --fix"
   },
@@ -63,6 +64,7 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2",
     "write-file-webpack-plugin": "^4.5.1"
   },
   "jest": {

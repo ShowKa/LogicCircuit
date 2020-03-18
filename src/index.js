@@ -12,7 +12,7 @@ import './index.scss'
 // ./node_modules/.bin/vue-devtools
 import devtools from '@vue/devtools'
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.DEBUG) {
   devtools.connect('localhost', '8098')
 }
 

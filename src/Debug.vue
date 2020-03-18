@@ -1,7 +1,5 @@
 <template>
-<div class="debug">
-  debugging
-</div>
+<div class="debug" />
 </template>
 <script>
 export default {}
