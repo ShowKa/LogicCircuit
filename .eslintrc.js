@@ -8,17 +8,18 @@ module.exports = {
     // standard linting rules
     'standard'
   ],
-  plugins: [
-    'vue'
-  ],
-  overrides: [{
-    // rely on editor's formatter
-    'files': ['*.vue'],
-    'rules': {
-      'space-before-function-paren': 'off',
-      'vue/html-indent': 'off'
+  plugins: ['vue'],
+  overrides: [
+    {
+      // rely on editor's formatter
+      files: ['*.vue'],
+      rules: {
+        'space-before-function-paren': 'off',
+        'vue/html-indent': 'off',
+        'vue/max-attributes-per-line': 'off'
+      }
     }
-  }],
+  ],
   env: {
     browser: true,
     node: true,
