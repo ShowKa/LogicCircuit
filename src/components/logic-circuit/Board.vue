@@ -1,60 +1,41 @@
 <template>
-<div class="board">
-  <!-- Constant -->
-  <fieldset
-    v-for="constant in constants"
-    :key="constant.key"
-  >
-    <Constant
-      ref="constants"
-      v-draggable
-      :level="constant.level"
-      @dragging="onDragging"
-    />
-  </fieldset>
-  <!-- Gate -->
-  <fieldset
-    v-for="gate in gates"
-    :key="gate.key"
-  >
-    <Gate
-      ref="gates"
-      v-draggable
-      :gate-type="gate.type"
-      @dragging="onDragging"
-    />
-  </fieldset>
-  <!-- Display -->
-  <fieldset
-    v-for="display in displays"
-    :key="display.key"
-  >
-    <Display
-      ref="displays"
-      v-draggable
-      :level="display.level"
-      @dragging="onDragging"
-    />
-  </fieldset>
-  <!-- Conductor -->
-  <fieldset
-    v-for="conductor in conductors"
-    :key="conductor.key"
-  >
-    <Conductor
-      ref="conductors"
-      class="board__conductor"
-      v-bind="conductor"
-    />
-  </fieldset>
-</div>
+  <div id="board" class="board">
+    <!-- Constant -->
+    <fieldset v-for="constant in constants" :key="constant.key">
+      <Constant
+        ref="constants"
+        v-draggable
+        :level="constant.level"
+        @dragging="onDragging"
+      />
+    </fieldset>
+    <!-- Gate -->
+    <fieldset v-for="gate in gates" :key="gate.key">
+      <Gate
+        ref="gates"
+        v-draggable
+        :gate-type="gate.type"
+        @dragging="onDragging"
+      />
+    </fieldset>
+    <!-- Display -->
+    <fieldset v-for="display in displays" :key="display.key">
+      <Display
+        ref="displays"
+        v-draggable
+        :level="display.level"
+        @dragging="onDragging"
+      />
+    </fieldset>
+    <!-- Conductor -->
+    <fieldset v-for="conductor in conductors" :key="conductor.key">
+      <Conductor ref="conductors" class="board__conductor" v-bind="conductor" />
+    </fieldset>
+  </div>
 </template>
 <script>
 // imports
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Gate from './Gate.vue'
 import Constant from './Constant.vue'
 import Display from './Display.vue'
@@ -170,7 +151,7 @@ export default {
         inputX: cood.x2,
         inputY: cood.y2,
         devices: [output, input],
-        key: 'devices_' + (new Date().getTime())
+        key: 'devices_' + new Date().getTime()
       }
       this.conductors.push(props)
       this.$nextTick(function() {
@@ -232,7 +213,8 @@ export default {
       const body = document.body
       const docEl = document.documentElement
       const scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop
-      const scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft
+      const scrollLeft =
+        window.pageXOffset || docEl.scrollLeft || body.scrollLeft
       const clientTop = docEl.clientTop || body.clientTop || 0
       const clientLeft = docEl.clientLeft || body.clientLeft || 0
       const top = box.top + scrollTop - clientTop
@@ -257,17 +239,17 @@ export default {
   }
 }
 </script>
-<style lang="scss" >
+<style lang="scss">
 .board {
-    height: 100%;
-    width: 100%;
-    // background-image: url("/static/img/grid.png");
-    position: relative;
+  height: 100%;
+  width: 100%;
+  // background-image: url("/static/img/grid.png");
+  position: relative;
+  top: 0;
+  left: 0;
+  &__conductor {
+    position: absolute;
     top: 0;
-    left: 0;
-    &__conductor {
-        position: absolute;
-        top: 0;
-    }
+  }
 }
 </style>

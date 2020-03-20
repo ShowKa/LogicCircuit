@@ -32,12 +32,17 @@ Vue.directive('cloneable', {
       return false
     }
     // up
-    function mouseup () {
-      component.$emit('drop', component)
-      // el.style.top = startY + 'px'
-      // el.style.left = startX + 'px'
+    function mouseup (e) {
       document.removeEventListener('mousemove', mousemove)
       document.removeEventListener('mouseup', mouseup)
+      if (e.target.id !== 'board') {
+        var top = startY
+        var left = startX
+        el.style.top = top + 'px'
+        el.style.left = left + 'px'
+        return
+      }
+      component.$emit('drop', component)
     }
     // down
     el.addEventListener('mousedown', function (e) {
