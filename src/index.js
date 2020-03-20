@@ -16,7 +16,7 @@ if (process.env.DEBUG) {
   devtools.connect('localhost', '8098')
 }
 
-Vue.directive('cloneable', {
+Vue.directive('droppable-on-board', {
   bind: function(el, binding, vnode) {
     el.style.position = 'relative'
     var startX, startY, initialMouseX, initialMouseY

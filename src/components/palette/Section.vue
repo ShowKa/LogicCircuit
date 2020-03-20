@@ -6,7 +6,7 @@
           <!-- Display -->
           <fieldset v-for="display in displays" :key="display.key">
             <Display
-              v-cloneable
+              v-droppable-on-board
               :level="display.level"
               class="section__element"
               @drop="onDropDisplay"
@@ -20,7 +20,7 @@
         <div class="section__row row">
           <div class="column">
             <Constant
-              v-cloneable
+              v-droppable-on-board
               class="section__element"
               :level="target.level"
               @drop="onDropConstant"
@@ -34,7 +34,7 @@
         <div class="section__row row">
           <div class="column">
             <Gate
-              v-cloneable
+              v-droppable-on-board
               class="section__element"
               :gate-type="target.type"
               @drop="onDropGate"
