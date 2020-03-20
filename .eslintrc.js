@@ -12,7 +12,7 @@ module.exports = {
   overrides: [
     {
       // rely on editor's formatter
-      files: ['*.vue'],
+      files: ['*.vue', '*.js'],
       rules: {
         'space-before-function-paren': 'off',
         'vue/html-indent': 'off',
