@@ -17,12 +17,12 @@ if (process.env.DEBUG) {
 }
 
 Vue.directive('cloneable', {
-  bind: function (el, binding, vnode) {
+  bind: function(el, binding, vnode) {
     el.style.position = 'relative'
     var startX, startY, initialMouseX, initialMouseY
     const component = vnode.componentInstance
     // move
-    function mousemove (e) {
+    function mousemove(e) {
       const dx = e.clientX - initialMouseX
       const dy = e.clientY - initialMouseY
       var top = startY + dy
@@ -32,21 +32,27 @@ Vue.directive('cloneable', {
       return false
     }
     // up
-    function mouseup (e) {
+    function mouseup(e) {
       document.removeEventListener('mousemove', mousemove)
       document.removeEventListener('mouseup', mouseup)
-      if (e.target.id !== 'board') {
-        var top = startY
-        var left = startX
-        el.style.top = top + 'px'
-        el.style.left = left + 'px'
+      const boadRect = e.target.getBoundingClientRect()
+      const elRect = el.getBoundingClientRect()
+      if (
+        e.target.id === 'board' &&
+        elRect.x >= boadRect.x &&
+        elRect.y >= boadRect.y
+      ) {
+        component.$emit('drop', component)
         return
       }
-      component.$emit('drop', component)
+      // at start position
+      var top = startY
+      var left = startX
+      el.style.top = top + 'px'
+      el.style.left = left + 'px'
     }
     // down
-    el.addEventListener('mousedown', function (e) {
-      component.$emit('startDragging', component)
+    el.addEventListener('mousedown', function(e) {
       startX = el.offsetLeft
       startY = el.offsetTop
       initialMouseX = e.clientX
@@ -59,12 +65,12 @@ Vue.directive('cloneable', {
 })
 
 Vue.directive('draggable', {
-  bind: function (el, binding, vnode) {
+  bind: function(el, binding, vnode) {
     el.style.position = 'absolute'
     var startX, startY, initialMouseX, initialMouseY
     const component = vnode.componentInstance
 
-    function mousemove (e) {
+    function mousemove(e) {
       const dx = e.clientX - initialMouseX
       const dy = e.clientY - initialMouseY
       var top = startY + dy
@@ -83,12 +89,12 @@ Vue.directive('draggable', {
       return false
     }
 
-    function mouseup () {
+    function mouseup() {
       document.removeEventListener('mousemove', mousemove)
       document.removeEventListener('mouseup', mouseup)
     }
 
-    el.addEventListener('mousedown', function (e) {
+    el.addEventListener('mousedown', function(e) {
       startX = el.offsetLeft
       startY = el.offsetTop
       initialMouseX = e.clientX

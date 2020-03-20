@@ -1,59 +1,49 @@
 <template>
-<div class="section">
-  <div class="section__box">
-    <div class="section__row row">
-      <div class="column">
-        <!-- Display -->
-        <fieldset
-          v-for="display in displays"
-          :key="display.key"
-        >
-          <Display
-            v-cloneable
-            :level="display.level"
-            class="section__element"
-            @drop="onDropDisplay"
-            @startDragging="onStartDragging"
-          />
-        </fieldset>
+  <div class="section">
+    <div class="section__box">
+      <div class="section__row row">
+        <div class="column">
+          <!-- Display -->
+          <fieldset v-for="display in displays" :key="display.key">
+            <Display
+              v-cloneable
+              :level="display.level"
+              class="section__element"
+              @drop="onDropDisplay"
+            />
+          </fieldset>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="section__box">
-    <fieldset
-      v-for="target in constants"
-      :key="target.key"
-    >
-      <div class="section__row row">
-        <div class="column">
-          <Constant
-            v-cloneable
-            class="section__element"
-            :level="target.level"
-            @drop="onDropConstant"
-          />
+    <div class="section__box">
+      <fieldset v-for="target in constants" :key="target.key">
+        <div class="section__row row">
+          <div class="column">
+            <Constant
+              v-cloneable
+              class="section__element"
+              :level="target.level"
+              @drop="onDropConstant"
+            />
+          </div>
         </div>
-      </div>
-    </fieldset>
-  </div>
-  <div class="section__box">
-    <fieldset
-      v-for="target in gates"
-      :key="target.key"
-    >
-      <div class="section__row row">
-        <div class="column">
-          <Gate
-            v-cloneable
-            class="section__element"
-            :gate-type="target.type"
-            @drop="onDropGate"
-          />
+      </fieldset>
+    </div>
+    <div class="section__box">
+      <fieldset v-for="target in gates" :key="target.key">
+        <div class="section__row row">
+          <div class="column">
+            <Gate
+              v-cloneable
+              class="section__element"
+              :gate-type="target.type"
+              @drop="onDropGate"
+            />
+          </div>
         </div>
-      </div>
-    </fieldset>
+      </fieldset>
+    </div>
   </div>
-</div>
 </template>
 <script>
 import {
@@ -174,22 +164,21 @@ export default {
           }
         }
       })
-    },
-    onStartDragging(component) {}
+    }
   }
 }
 </script>
-<style lang="scss" >
+<style lang="scss">
 .section {
-    &__box {
-        margin-top: 35px;
-    }
-    &__row {
-        margin-top: 10px;
-        position: relative;
-    }
-    &__element {
-        left: 10px;
-    }
+  &__box {
+    margin-top: 35px;
+  }
+  &__row {
+    margin-top: 10px;
+    position: relative;
+  }
+  &__element {
+    left: 10px;
+  }
 }
 </style>
