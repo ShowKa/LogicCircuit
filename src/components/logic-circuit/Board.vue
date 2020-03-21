@@ -10,6 +10,16 @@
         @dragging="onDragging"
       />
     </fieldset>
+    <!-- Supply -->
+    <fieldset v-for="supply in supplies" :key="supply.key">
+      <Supply
+        ref="supplies"
+        v-draggable
+        :level="supply.level"
+        :on-board="true"
+        @dragging="onDragging"
+      />
+    </fieldset>
     <!-- Gate -->
     <fieldset v-for="gate in gates" :key="gate.key">
       <Gate
@@ -43,17 +53,20 @@ import Gate from './Gate.vue'
 import Constant from './Constant.vue'
 import Display from './Display.vue'
 import Conductor from './Conductor.vue'
+import Supply from './Supply.vue'
 // component
 export default {
   components: {
     Gate,
     Display,
     Constant,
-    Conductor
+    Conductor,
+    Supply
   },
   data() {
     return {
       constants: [],
+      supplies: [],
       displays: [],
       gates: [],
       conductors: []
@@ -62,12 +75,11 @@ export default {
   computed: {
     ...mapState({
       nominated: 'nominated',
-      gatesInState: 'gates',
-      conductorInState: 'conductors',
       // dropped
       droppedDisplays: 'droppedDisplays',
       droppedConstants: 'droppedConstants',
-      droppedGates: 'droppedGates'
+      droppedGates: 'droppedGates',
+      droppedSupplies: 'droppedSupplies'
     })
   },
   watch: {
@@ -93,6 +105,26 @@ export default {
         })
       })
       this.clearDroppedConstants()
+    },
+    droppedSupplies(newValue, oldValue) {
+      // add new component into Board
+      const supply = newValue[0]
+      this.supplies.push({
+        level: supply.level,
+        key: 'supply_' + new Date().getTime()
+      })
+      // position
+      const coord = this.getCoordsRelativeToBoard(supply.$el)
+      this.$nextTick(function() {
+        const components = this.$refs.supplies
+        const target = components[components.length - 1]
+        target.$el.style.left = coord.left + 'px'
+        target.$el.style.top = coord.top + 'px'
+        this.pushSupply({
+          component: target
+        })
+      })
+      this.clearDroppedSupplies()
     },
     droppedGates(newValue, oldValue) {
       // add new component into Board
@@ -179,10 +211,12 @@ export default {
     ...mapActions({
       clearNominated: 'clearNominated',
       pushConstant: 'pushConstant',
+      pushSupply: 'pushSupply',
       pushDisplay: 'pushDisplay',
       pushGate: 'pushGate',
       pushConductor: 'pushConductor',
       clearDroppedDisplays: 'clearDroppedDisplays',
+      clearDroppedSupplies: 'clearDroppedSupplies',
       clearDroppedConstants: 'clearDroppedConstants',
       clearDroppedGates: 'clearDroppedGates'
     }),

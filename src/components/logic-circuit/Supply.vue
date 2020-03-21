@@ -1,7 +1,7 @@
 <template>
-  <div class="supply" @click="toggleLevel">
-    <div class="supply__level">
-      {{ level }}
+  <div class="supply">
+    <div class="supply__level" @mouseup="toggleLevel">
+      {{ onBoard ? level : '?' }}
     </div>
     <IoDevice
       ref="out"
@@ -17,13 +17,18 @@ export default {
   components: {
     IoDevice
   },
+  props: {
+    onBoard: {
+      type: Boolean,
+      required: true,
+      default: false
+    }
+  },
   data() {
     return {
       level: 0
     }
   },
-  // transmit level to device after this instance mounted to Vue.
-  // Because the device is always LOW/0 when initialization.
   mounted() {
     this.transmit()
   },
@@ -36,6 +41,9 @@ export default {
       out.transmit(this.level)
     },
     toggleLevel() {
+      if (!this.onBoard) {
+        return
+      }
       this.level = this.level === 0 ? 1 : 0
       this.transmit()
     }
