@@ -1,16 +1,12 @@
-
 <template>
-<div
-  class="io-device"
-  :class="{'io-device__acceptable': acceptable}"
-  @mouseup="onMouseUp"
-/>
+  <div
+    class="io-device"
+    :class="{ 'io-device__acceptable': acceptable }"
+    @mouseup="onMouseUp"
+  />
 </template>
 <script>
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   props: {
     ioType: {
@@ -25,7 +21,6 @@ export default {
   },
   data() {
     return {
-      setOnBoard: true,
       acceptable: false,
       level: 0,
       conductors: []
@@ -34,10 +29,16 @@ export default {
   computed: {
     ...mapState({
       nominated: 'nominated'
-    })
+    }),
+    onBoard() {
+      return this.belong.onBoard
+    }
   },
   watch: {
     nominated(newValue, oldValue) {
+      if (!this.onBoard) {
+        return
+      }
       if (newValue.length === 0) {
         this.acceptable = false
         return
@@ -60,6 +61,9 @@ export default {
       clearNominated: 'clearNominated'
     }),
     onMouseUp() {
+      if (!this.onBoard) {
+        return
+      }
       const _push = () => {
         this.pushNominated({
           component: this
@@ -132,9 +136,10 @@ export default {
 }
 </script>
 <style lang="scss">
+@import 'assets/app';
 .io-device {
-    &__acceptable {
-        background-color: red;
-    }
+  &__acceptable {
+    background-color: $color-split-complementary-2;
+  }
 }
 </style>

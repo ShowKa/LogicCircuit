@@ -9,7 +9,11 @@ export default {}
 <style lang="scss">
 @import "assets/app";
 .app-title {
-    @include default-font;
+    // @include default-font;
+    font-family: "Abril Fatface", serif;
+    font-size: 60px;
+    // color: lighten($color-base, 5%);
+    color: $color-border;
     width: 100%;
 }
 </style>

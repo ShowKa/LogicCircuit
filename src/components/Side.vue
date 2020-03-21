@@ -1,7 +1,7 @@
 <template>
-  <div class="side">
-    <Palette />
-  </div>
+<div class="side h-100">
+  <Palette />
+</div>
 </template>
 <script>
 import Palette from './palette/Palette.vue'
@@ -13,6 +13,6 @@ export default {
 </script>
 <style lang="scss" >
 .side {
-    background-color: green;
+    min-width: 110px;
 }
 </style>

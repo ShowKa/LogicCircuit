@@ -1,15 +1,9 @@
 <template>
-  <div class="pallete row">
-    <div class="col-md-12 col-sm-4">
-      <Section />
-    </div>
-    <div class="col-md-12 col-sm-4">
-      <Section />
-    </div>
-    <div class="col-md-12 col-sm-4">
-      <Section />
-    </div>
+<div class="pallete row h-100">
+  <div class="col-12">
+    <Section />
   </div>
+</div>
 </template>
 <script>
 import Section from './Section.vue'
@@ -20,7 +14,8 @@ export default {
 }
 </script>
 <style lang="scss" >
+@import 'assets/app.scss';
 .pallete {
-    border: 1px solid red;
+    background-color: lighten($color-split-complementary-1, 20%);
 }
 </style>

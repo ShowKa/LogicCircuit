@@ -8,7 +8,11 @@ const state = {
   constants: [],
   displays: [],
   gates: [],
-  conductors: []
+  conductors: [],
+  // dropped
+  droppedDisplays: [],
+  droppedConstants: [],
+  droppedGates: []
 }
 
 const getters = {
@@ -26,6 +30,16 @@ const getters = {
   },
   conductors (state) {
     return state.conductors
+  },
+  // dropped
+  droppedDisplays (state) {
+    return state.droppedDisplays
+  },
+  droppedConstants (state) {
+    return state.droppedConstants
+  },
+  droppedGates (state) {
+    return state.droppedGates
   }
 }
 
@@ -47,6 +61,25 @@ const mutations = {
   },
   pushConductor (state, payload) {
     state.conductors.push(payload.component)
+  },
+  // dropped
+  pushDroppedDisplay (state, payload) {
+    state.droppedDisplays.push(payload.component)
+  },
+  clearDroppedDisplays (state, payload) {
+    state.droppedDisplays.length = 0
+  },
+  pushDroppedConstant (state, payload) {
+    state.droppedConstants.push(payload.component)
+  },
+  clearDroppedConstants (state, payload) {
+    state.droppedConstants.length = 0
+  },
+  pushDroppedGate (state, payload) {
+    state.droppedGates.push(payload.component)
+  },
+  clearDroppedGates (state, payload) {
+    state.droppedGates.length = 0
   }
 }
 
@@ -78,6 +111,31 @@ const actions = {
     context.commit('pushConductor', {
       component: payload.component
     })
+  },
+  // dropped
+  pushDroppedDisplay (context, payload) {
+    context.commit('pushDroppedDisplay', {
+      component: payload.component
+    })
+  },
+  clearDroppedDisplays (context, payload) {
+    context.commit('clearDroppedDisplays')
+  },
+  pushDroppedConstant (context, payload) {
+    context.commit('pushDroppedConstant', {
+      component: payload.component
+    })
+  },
+  clearDroppedConstants (context, payload) {
+    context.commit('clearDroppedConstants')
+  },
+  pushDroppedGate (context, payload) {
+    context.commit('pushDroppedGate', {
+      component: payload.component
+    })
+  },
+  clearDroppedGates (context, payload) {
+    context.commit('clearDroppedGates')
   }
 }
 
