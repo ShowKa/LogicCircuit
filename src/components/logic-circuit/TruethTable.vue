@@ -3,11 +3,21 @@
     <table>
       <thead>
         <tr>
-          <td v-for="target in constants" :key="target.key">
-            input
+          <td v-for="target in supplies" :key="target.key">
+            {{ target.name }}
+          </td>
+          <td v-for="target in displays" :key="target.key">
+            {{ target.name }}
           </td>
         </tr>
       </thead>
+      <tbody>
+        <tr v-for="(vr, i) in values" :key="'tt-row-' + i">
+          <td v-for="(vc, j) in vr" :key="'tt-column-' + i + '-' + j">
+            {{ vc }}
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -16,8 +26,30 @@ import { mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      constants: 'constants'
-    })
+      supplies: 'supplies',
+      displays: 'displays'
+    }),
+    values() {
+      const ret = []
+      const len = this.supplies.length
+      if (len === 0) {
+        return []
+      }
+      var max = 2 ** len
+      for (var i = 0; i < max; i++) {
+        var v = i
+        var dev = max / 2
+        const row = []
+        for (var j = len; j > 0; j--) {
+          const _v = v / dev
+          row.push(_v >= 1 ? 1 : 0)
+          v %= dev
+          dev /= 2
+        }
+        ret.push(row)
+      }
+      return ret
+    }
   }
 }
 </script>
