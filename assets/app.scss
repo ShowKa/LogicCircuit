@@ -17,8 +17,22 @@ html {
 }
 
 // color
+// https://www.sessions.edu/color-calculator/
 $color-base: #0e83cd;
+$color-monochromatic: #3081b4;
+
+$color-analogous-1: #0ecd57;
+$color-analogous-2: #340ecd;
+
+$color-tladic-1: #cdb00e;
+$color-tladic-2: #cd0e47;
+
+$color-complementary: #cd510e;
+$color-split-complementary-1: #cd800e;
+$color-split-complementary-2: #cd210e;
+
 $color-border: #f8f8f8;
+
 @mixin background-color-base {
   background-color: $color-base;
 }

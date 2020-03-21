@@ -6,7 +6,6 @@
   >
     <path
       :d="curvedPath"
-      style="stroke:rgb(255,0,0);stroke-width:1"
       fill="transparent"
     />
   </svg>
@@ -91,7 +90,12 @@ export default {
 }
 </script>
 <style lang="scss">
+@import "assets/app";
 .conductor {
     pointer-events: none;
+    path {
+        stroke: $color-complementary;
+        stroke-width: 2;
+    }
 }
 </style>
