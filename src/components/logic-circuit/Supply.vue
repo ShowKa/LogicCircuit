@@ -31,7 +31,8 @@ export default {
   },
   data() {
     return {
-      level: 0
+      level: 0,
+      savedLevel: 0
     }
   },
   mounted() {
@@ -51,6 +52,12 @@ export default {
       }
       this.level = this.level === 0 ? 1 : 0
       this.transmit()
+    },
+    saveLevel() {
+      this.savedLevel = this.level
+    },
+    revertLevel() {
+      this.level = this.savedLevel
     }
   }
 }

@@ -48,6 +48,26 @@ export default {
         }
         ret.push(row)
       }
+      for (var s of this.supplies) {
+        s.saveLevel()
+      }
+      for (var k = 0; k < ret.length; k++) {
+        const row = ret[k]
+        for (var l = 0; l < row.length; l++) {
+          const v = row[l]
+          const target = this.supplies[l]
+          target.level = v
+          target.transmit()
+        }
+        for (var m = 0; m < this.displays.length; m++) {
+          const display = this.displays[m]
+          row.push(display.level)
+        }
+      }
+      for (var t of this.supplies) {
+        t.revertLevel()
+        t.transmit()
+      }
       return ret
     }
   }
