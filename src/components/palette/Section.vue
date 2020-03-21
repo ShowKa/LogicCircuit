@@ -9,6 +9,7 @@
               v-droppable-on-board
               :level="display.level"
               class="section__element"
+              :on-board="false"
               @drop="onDropDisplay"
             />
           </fieldset>
@@ -23,6 +24,7 @@
               v-droppable-on-board
               class="section__element"
               :level="target.level"
+              :on-board="false"
               @drop="onDropConstant"
             />
           </div>
@@ -37,6 +39,7 @@
               v-droppable-on-board
               class="section__element"
               :gate-type="target.type"
+              :on-board="false"
               @drop="onDropGate"
             />
           </div>

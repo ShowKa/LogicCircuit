@@ -6,6 +6,7 @@
         ref="constants"
         v-draggable
         :level="constant.level"
+        :on-board="true"
         @dragging="onDragging"
       />
     </fieldset>
@@ -14,6 +15,7 @@
       <Gate
         ref="gates"
         v-draggable
+        :on-board="true"
         :gate-type="gate.type"
         @dragging="onDragging"
       />
@@ -23,6 +25,7 @@
       <Display
         ref="displays"
         v-draggable
+        :on-board="true"
         :level="display.level"
         @dragging="onDragging"
       />
