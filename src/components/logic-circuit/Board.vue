@@ -17,6 +17,7 @@
         v-draggable
         :level="supply.level"
         :on-board="true"
+        :name="supply.name"
         @dragging="onDragging"
       />
     </fieldset>
@@ -37,6 +38,7 @@
         v-draggable
         :on-board="true"
         :level="display.level"
+        :name="display.name"
         @dragging="onDragging"
       />
     </fieldset>
@@ -111,7 +113,8 @@ export default {
       const supply = newValue[0]
       this.supplies.push({
         level: supply.level,
-        key: 'supply_' + new Date().getTime()
+        key: 'supply_' + new Date().getTime(),
+        name: this.supplies.length + 1 + ''
       })
       // position
       const coord = this.getCoordsRelativeToBoard(supply.$el)
@@ -151,7 +154,8 @@ export default {
       const display = newValue[0]
       this.displays.push({
         level: display.level,
-        key: 'display_' + new Date().getTime()
+        key: 'display_' + new Date().getTime(),
+        name: this.displays.length + 1 + ''
       })
       // position
       const coord = this.getCoordsRelativeToBoard(display.$el)

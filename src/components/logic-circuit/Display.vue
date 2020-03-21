@@ -17,6 +17,11 @@ export default {
       type: Boolean,
       required: true,
       default: false
+    },
+    name: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data() {
