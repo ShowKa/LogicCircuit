@@ -46,6 +46,8 @@
     <fieldset v-for="conductor in conductors" :key="conductor.key">
       <Conductor ref="conductors" class="board__conductor" v-bind="conductor" />
     </fieldset>
+    <!-- TruthTable -->
+    <TruthTable class="board__tt" />
   </div>
 </template>
 <script>
@@ -56,6 +58,7 @@ import Constant from './Constant.vue'
 import Display from './Display.vue'
 import Conductor from './Conductor.vue'
 import Supply from './Supply.vue'
+import TruthTable from './TruthTable.vue'
 // component
 export default {
   components: {
@@ -63,7 +66,8 @@ export default {
     Display,
     Constant,
     Conductor,
-    Supply
+    Supply,
+    TruthTable
   },
   data() {
     return {
@@ -155,7 +159,7 @@ export default {
       this.displays.push({
         level: display.level,
         key: 'display_' + new Date().getTime(),
-        name: this.displays.length + 1 + ''
+        name: String.fromCharCode('a'.charCodeAt(0) + this.displays.length)
       })
       // position
       const coord = this.getCoordsRelativeToBoard(display.$el)
@@ -291,6 +295,11 @@ export default {
   &__conductor {
     position: absolute;
     top: 0;
+  }
+  &__tt {
+    position: absolute;
+    right: 11px;
+    bottom: 11px;
   }
 }
 </style>
