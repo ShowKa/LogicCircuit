@@ -1,5 +1,8 @@
 <template>
   <div class="supply">
+    <div class="supply__name">
+      {{ name }}
+    </div>
     <div class="supply__level" @mouseup="toggleLevel">
       {{ onBoard ? level : '?' }}
     </div>
@@ -86,6 +89,13 @@ export default {
     height: $height;
     background-color: $color-border;
     @include elm-font;
+    @include text-to-center($height);
+  }
+  &__name {
+    position: absolute;
+    left: -15px;
+    font-size: 13px;
+    color: $color-border;
     @include text-to-center($height);
   }
 }

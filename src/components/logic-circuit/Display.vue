@@ -2,7 +2,10 @@
   <div class="display">
     <IoDevice ref="in" class="display__input" io-type="input" :belong="this" />
     <div class="display__level">
-      {{ level }}
+      {{ onBoard ? level : '?' }}
+    </div>
+    <div class="display__name">
+      {{ name }}
     </div>
   </div>
 </template>
@@ -64,6 +67,13 @@ export default {
     height: $height;
     background-color: $color-border;
     @include elm-font;
+    @include text-to-center($height);
+  }
+  &__name {
+    position: absolute;
+    right: -15px;
+    font-size: 13px;
+    color: $color-border;
     @include text-to-center($height);
   }
 }
