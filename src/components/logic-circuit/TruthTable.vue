@@ -1,9 +1,12 @@
 <template>
   <div class="tt">
-    <div class="tt__hide-button">
+    <div v-if="show" class="tt__hide-button" @click="hideTable">
       hide
     </div>
-    <table class="tt__table">
+    <div v-if="!show" class="tt__show-button" @click="showTable">
+      show TruthTable
+    </div>
+    <table class="tt__table" :class="{ tt__table__hide: !show }">
       <thead class="tt__head">
         <tr>
           <th v-for="target in supplies" :key="target.key">
@@ -35,6 +38,11 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  data() {
+    return {
+      show: true
+    }
+  },
   computed: {
     ...mapState({
       supplies: 'supplies',
@@ -81,6 +89,14 @@ export default {
       }
       return ret
     }
+  },
+  methods: {
+    showTable() {
+      this.show = true
+    },
+    hideTable() {
+      this.show = false
+    }
   }
 }
 </script>
@@ -94,6 +110,11 @@ export default {
   user-select: none;
   text-align: center;
   display: table;
+  &__table {
+    &__hide {
+      display: none;
+    }
+  }
   &__head {
     border-bottom: 1px solid;
     &__first {
@@ -108,11 +129,13 @@ export default {
     position: absolute;
     top: -30px;
     right: 11px;
-    cursor: pointer;
-    // display: none;
-    font-size: 13px;
     color: $color-base;
     text-decoration: underline;
+  }
+  &__hide-button,
+  &__show-button {
+    cursor: pointer;
+    font-size: 13px;
   }
 }
 .tt:hover .tt__hide-button {
