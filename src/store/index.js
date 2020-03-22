@@ -6,139 +6,172 @@ Vue.use(Vuex)
 const state = {
   nominated: [],
   constants: [],
+  supplies: [],
   displays: [],
   gates: [],
   conductors: [],
   // dropped
   droppedDisplays: [],
+  droppedSupplies: [],
   droppedConstants: [],
   droppedGates: []
 }
 
 const getters = {
-  nominated (state) {
+  nominated(state) {
     return state.nominated
   },
-  constants (state) {
+  constants(state) {
     return state.constants
   },
-  displays (state) {
+  displays(state) {
     return state.displays
   },
-  gates (state) {
+  supplies(state) {
+    return state.supplies
+  },
+  gates(state) {
     return state.gates
   },
-  conductors (state) {
+  conductors(state) {
     return state.conductors
   },
   // dropped
-  droppedDisplays (state) {
+  droppedDisplays(state) {
     return state.droppedDisplays
   },
-  droppedConstants (state) {
+  droppedSupplies(state) {
+    return state.droppedSupplies
+  },
+  droppedConstants(state) {
     return state.droppedConstants
   },
-  droppedGates (state) {
+  droppedGates(state) {
     return state.droppedGates
   }
 }
 
 const mutations = {
-  pushNominated (state, payload) {
+  pushNominated(state, payload) {
     state.nominated.push(payload.component)
   },
-  clearNominated (state, payload) {
+  clearNominated(state, payload) {
     state.nominated.length = 0
   },
-  pushConstant (state, payload) {
+  pushConstant(state, payload) {
     state.constants.push(payload.component)
   },
-  pushDisplay (state, payload) {
+  pushDisplay(state, payload) {
     state.displays.push(payload.component)
   },
-  pushGate (state, payload) {
+  pushSupply(state, payload) {
+    state.supplies.push(payload.component)
+  },
+  pushGate(state, payload) {
     state.gates.push(payload.component)
   },
-  pushConductor (state, payload) {
+  pushConductor(state, payload) {
     state.conductors.push(payload.component)
   },
   // dropped
-  pushDroppedDisplay (state, payload) {
+  pushDroppedDisplay(state, payload) {
     state.droppedDisplays.push(payload.component)
   },
-  clearDroppedDisplays (state, payload) {
+  clearDroppedDisplays(state, payload) {
     state.droppedDisplays.length = 0
   },
-  pushDroppedConstant (state, payload) {
+  pushDroppedSupply(state, payload) {
+    state.droppedSupplies.push(payload.component)
+  },
+  clearDroppedSupplies(state, payload) {
+    state.droppedSupplies.length = 0
+  },
+  pushDroppedConstant(state, payload) {
     state.droppedConstants.push(payload.component)
   },
-  clearDroppedConstants (state, payload) {
+  clearDroppedConstants(state, payload) {
     state.droppedConstants.length = 0
   },
-  pushDroppedGate (state, payload) {
+  pushDroppedGate(state, payload) {
     state.droppedGates.push(payload.component)
   },
-  clearDroppedGates (state, payload) {
+  clearDroppedGates(state, payload) {
     state.droppedGates.length = 0
   }
 }
 
 const actions = {
-  pushNominated (context, payload) {
+  pushNominated(context, payload) {
     context.commit('pushNominated', {
       component: payload.component
     })
   },
-  clearNominated (context, payload) {
+  clearNominated(context, payload) {
     context.commit('clearNominated')
   },
-  pushConstant (context, payload) {
+  pushConstant(context, payload) {
     context.commit('pushConstant', {
       component: payload.component
     })
   },
-  pushDisplay (context, payload) {
+  pushDisplay(context, payload) {
     context.commit('pushDisplay', {
       component: payload.component
     })
   },
-  pushGate (context, payload) {
+  pushSupply(context, payload) {
+    context.commit('pushSupply', {
+      component: payload.component
+    })
+  },
+  pushGate(context, payload) {
     context.commit('pushGate', {
       component: payload.component
     })
   },
-  pushConductor (context, payload) {
+  pushConductor(context, payload) {
     context.commit('pushConductor', {
       component: payload.component
     })
   },
   // dropped
-  pushDroppedDisplay (context, payload) {
+  pushDroppedDisplay(context, payload) {
     context.commit('pushDroppedDisplay', {
       component: payload.component
     })
   },
-  clearDroppedDisplays (context, payload) {
+  clearDroppedDisplays(context, payload) {
     context.commit('clearDroppedDisplays')
   },
-  pushDroppedConstant (context, payload) {
+  pushDroppedSupply(context, payload) {
+    context.commit('pushDroppedSupply', {
+      component: payload.component
+    })
+  },
+  clearDroppedSupplies(context, payload) {
+    context.commit('clearDroppedSupplies')
+  },
+  pushDroppedConstant(context, payload) {
     context.commit('pushDroppedConstant', {
       component: payload.component
     })
   },
-  clearDroppedConstants (context, payload) {
+  clearDroppedConstants(context, payload) {
     context.commit('clearDroppedConstants')
   },
-  pushDroppedGate (context, payload) {
+  pushDroppedGate(context, payload) {
     context.commit('pushDroppedGate', {
       component: payload.component
     })
   },
-  clearDroppedGates (context, payload) {
+  clearDroppedGates(context, payload) {
     context.commit('clearDroppedGates')
   }
 }
 
 export default new Vuex.Store({
-  state, getters, mutations, actions
+  state,
+  getters,
+  mutations,
+  actions
 })

@@ -67,6 +67,7 @@ export default {
     width: $width * (8 / 10);
     height: $height;
     background-color: $color-border;
+    text-emphasis: none;
     @include elm-font;
     @include text-to-center($height);
   }

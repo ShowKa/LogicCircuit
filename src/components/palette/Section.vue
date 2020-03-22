@@ -4,13 +4,28 @@
       <div class="section__row row">
         <div class="column">
           <!-- Display -->
-          <fieldset v-for="display in displays" :key="display.key">
+          <fieldset v-for="target in displays" :key="target.key">
             <Display
               v-droppable-on-board
-              :level="display.level"
+              :level="target.level"
               class="section__element"
               :on-board="false"
               @drop="onDropDisplay"
+            />
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div class="section__box">
+      <div class="section__row row">
+        <div class="column">
+          <fieldset v-for="target in supplies" :key="target.key">
+            <Supply
+              v-droppable-on-board
+              :level="target.level"
+              class="section__element"
+              :on-board="false"
+              @drop="onDropSupply"
             />
           </fieldset>
         </div>
@@ -56,16 +71,22 @@ import {
 import Gate from '../logic-circuit/Gate.vue'
 import Constant from '../logic-circuit/Constant.vue'
 import Display from '../logic-circuit/Display.vue'
+import Supply from '../logic-circuit/Supply.vue'
 export default {
   components: {
     Gate,
     Constant,
-    Display
+    Display,
+    Supply
   },
   data() {
     // values for data
     const display = {
       key: 'display_' + new Date().getTime(),
+      level: 0
+    }
+    const supply = {
+      key: 'supply_' + new Date().getTime(),
       level: 0
     }
     const constant0 = {
@@ -99,6 +120,7 @@ export default {
     // data object
     return {
       displays: [display],
+      supplies: [supply],
       constants: [constant0, constant1],
       gates: [and, or, nand, nor, xor]
     }
@@ -106,6 +128,7 @@ export default {
   methods: {
     ...mapActions({
       pushDroppedDisplay: 'pushDroppedDisplay',
+      pushDroppedSupply: 'pushDroppedSupply',
       pushDroppedConstant: 'pushDroppedConstant',
       pushDroppedGate: 'pushDroppedGate'
     }),
@@ -122,6 +145,21 @@ export default {
           level: 0
         }
         this.displays.push(newDisplay)
+      })
+    },
+    onDropSupply(supply) {
+      // push to Boad
+      this.pushDroppedSupply({
+        component: supply
+      })
+      this.$nextTick(function() {
+        this.supplies.length = 0
+        // clone
+        const newSupply = {
+          key: 'supply_' + new Date().getTime(),
+          level: 0
+        }
+        this.supplies.push(newSupply)
       })
     },
     onDropConstant(constant) {
