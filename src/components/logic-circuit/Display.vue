@@ -71,10 +71,12 @@ export default {
   }
   &__name {
     position: absolute;
-    right: -15px;
-    font-size: 13px;
+    top: -20px;
+    left: 29px;
+    // right: -15px;
+    font-size: 14px;
     color: $color-border;
-    @include text-to-center($height);
+    // @include text-to-center($height);
   }
 }
 </style>

@@ -99,10 +99,11 @@ export default {
   }
   &__name {
     position: absolute;
-    left: -15px;
+    top: -20px;
+    left: 20px;
     font-size: 13px;
     color: $color-border;
-    @include text-to-center($height);
+    // @include text-to-center($height);
   }
   &__up-mark {
     left: 19px;
