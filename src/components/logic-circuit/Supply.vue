@@ -12,6 +12,12 @@
       io-type="output"
       :belong="this"
     />
+    <div class="supply__up-mark">
+      {{ onBoard && level == 0 ? '▲' : '' }}
+    </div>
+    <div class="supply__down-mark">
+      {{ onBoard && level == 1 ? '▼' : '' }}
+    </div>
   </div>
 </template>
 <script>
@@ -97,6 +103,20 @@ export default {
     font-size: 13px;
     color: $color-border;
     @include text-to-center($height);
+  }
+  &__up-mark {
+    left: 19px;
+    top: 1px;
+  }
+  &__down-mark {
+    left: 20px;
+    top: 30px;
+  }
+  &__down-mark,
+  &__up-mark {
+    position: absolute;
+    color: $color-base;
+    font-size: 7px;
   }
 }
 </style>
