@@ -1,19 +1,30 @@
 <template>
-  <div class="trueth-table">
-    <table>
-      <thead>
+  <div class="tt">
+    <div class="tt__hide-button">
+      hide
+    </div>
+    <table class="tt__table">
+      <thead class="tt__head">
         <tr>
-          <td v-for="target in supplies" :key="target.key">
+          <th v-for="target in supplies" :key="target.key">
             {{ target.name }}
-          </td>
-          <td v-for="target in displays" :key="target.key">
+          </th>
+          <th
+            v-for="(target, i) in displays"
+            :key="target.key"
+            :class="i === 0 ? 'tt__head__first' : ''"
+          >
             {{ target.name }}
-          </td>
+          </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="tt__body">
         <tr v-for="(vr, i) in values" :key="'tt-row-' + i">
-          <td v-for="(vc, j) in vr" :key="'tt-column-' + i + '-' + j">
+          <td
+            v-for="(vc, j) in vr"
+            :key="'tt-column-' + i + '-' + j"
+            class="tt__cell"
+          >
             {{ vc }}
           </td>
         </tr>
@@ -73,4 +84,38 @@ export default {
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+@import 'assets/app';
+@import './logic-circuit';
+.tt {
+  @include elm-font;
+  color: $color-border;
+  font-size: 17px;
+  user-select: none;
+  text-align: center;
+  display: table;
+  &__head {
+    border-bottom: 1px solid;
+    &__first {
+      border-left: 1px solid;
+    }
+  }
+  &__cell {
+    width: 50px;
+    height: 30px;
+  }
+  &__hide-button {
+    position: absolute;
+    top: -30px;
+    right: 11px;
+    cursor: pointer;
+    // display: none;
+    font-size: 13px;
+    color: $color-base;
+    text-decoration: underline;
+  }
+}
+.tt:hover .tt__hide-button {
+  color: $color-border;
+}
+</style>
