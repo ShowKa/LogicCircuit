@@ -215,6 +215,11 @@ export default {
       this.clearNominated()
     }
   },
+  mounted() {
+    this.$nextTick(function() {
+      window.addEventListener('resize', this.rezieConductorsSvg)
+    })
+  },
   methods: {
     ...mapActions({
       clearNominated: 'clearNominated',
@@ -228,6 +233,14 @@ export default {
       clearDroppedConstants: 'clearDroppedConstants',
       clearDroppedGates: 'clearDroppedGates'
     }),
+    rezieConductorsSvg() {
+      const rect = this.$el.getBoundingClientRect()
+      const height = rect.height
+      const width = rect.width
+      for (var c of this.$refs.conductors) {
+        c.resize(height, width)
+      }
+    },
     onDragging(gate) {
       const devices = gate.getDevices()
       for (const d of devices) {
