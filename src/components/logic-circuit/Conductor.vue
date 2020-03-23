@@ -1,15 +1,9 @@
 <template>
-<div class="conductor">
-  <svg
-    :height="height"
-    :width="width"
-  >
-    <path
-      :d="curvedPath"
-      fill="transparent"
-    />
-  </svg>
-</div>
+  <div class="conductor">
+    <svg :height="height" :width="width">
+      <path :d="curvedPath" fill="transparent" @click="onClick" />
+    </svg>
+  </div>
 </template>
 <script>
 export default {
@@ -51,7 +45,8 @@ export default {
         x2: this.inputX,
         y2: this.inputY
       },
-      level: 0
+      level: 0,
+      activate: false
     }
   },
   computed: {
@@ -61,10 +56,10 @@ export default {
       // M 10 10 C 20 20, 40 20, 50 10
       const diffX = cood.x2 > cood.x1 ? cood.x2 - cood.x1 : cood.x1 - cood.x2
       const diffY = cood.y2 - cood.y1
-      const secX = cood.x1 + (diffX * ratio)
-      const secY = cood.y1 + (diffY * ratio)
-      const thirdX = cood.x2 - (diffX * ratio)
-      const thirdY = cood.y2 + (diffY * ratio)
+      const secX = cood.x1 + diffX * ratio
+      const secY = cood.y1 + diffY * ratio
+      const thirdX = cood.x2 - diffX * ratio
+      const thirdY = cood.y2 + diffY * ratio
       return `M ${cood.x1} ${cood.y1} C ${secX} ${secY}, ${thirdX} ${thirdY}, ${cood.x2} ${cood.y2}`
     }
   },
@@ -85,17 +80,24 @@ export default {
           device.transmit(level)
         }
       }
+    },
+    onClick(target) {
+      this.toggleActivate()
+    },
+    toggleActivate() {
+      this.activate = !this.activate
     }
   }
 }
 </script>
 <style lang="scss">
-@import "assets/app";
+@import 'assets/app';
 .conductor {
-    pointer-events: none;
-    path {
-        stroke: $color-complementary;
-        stroke-width: 2;
-    }
+  pointer-events: none;
+  path {
+    stroke: $color-complementary;
+    stroke-width: 2;
+    pointer-events: auto;
+  }
 }
 </style>
