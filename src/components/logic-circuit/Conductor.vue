@@ -1,7 +1,15 @@
 <template>
   <div class="conductor">
     <svg :height="height" :width="width">
-      <path :d="curvedPath" fill="transparent" @click="onClick" />
+      <filter id="dropshadow" height="130%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="cyan" />
+      </filter>
+      <path
+        :d="curvedPath"
+        fill="transparent"
+        :class="{ activate: activate }"
+        @click="onClick"
+      />
     </svg>
   </div>
 </template>
@@ -98,6 +106,9 @@ export default {
     stroke: $color-complementary;
     stroke-width: 2;
     pointer-events: auto;
+  }
+  path.activate {
+    filter: url(#dropshadow);
   }
 }
 </style>
