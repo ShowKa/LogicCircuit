@@ -1,51 +1,55 @@
 <template>
   <div id="board" class="board">
     <!-- Constant -->
-    <fieldset v-for="constant in constants" :key="constant.key">
-      <Constant
-        ref="constants"
-        v-draggable
-        :level="constant.level"
-        :on-board="true"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Constant
+      v-for="constant in constants"
+      :key="constant.key"
+      ref="constants"
+      v-draggable
+      :level="constant.level"
+      :on-board="true"
+      @dragging="onDragging"
+    />
     <!-- Supply -->
-    <fieldset v-for="supply in supplies" :key="supply.key">
-      <Supply
-        ref="supplies"
-        v-draggable
-        :level="supply.level"
-        :on-board="true"
-        :name="supply.name"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Supply
+      v-for="supply in supplies"
+      :key="supply.key"
+      ref="supplies"
+      v-draggable
+      :level="supply.level"
+      :on-board="true"
+      :name="supply.name"
+      @dragging="onDragging"
+    />
     <!-- Gate -->
-    <fieldset v-for="gate in gates" :key="gate.key">
-      <Gate
-        ref="gates"
-        v-draggable
-        :on-board="true"
-        :gate-type="gate.type"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Gate
+      v-for="gate in gates"
+      :key="gate.key"
+      ref="gates"
+      v-draggable
+      :on-board="true"
+      :gate-type="gate.type"
+      @dragging="onDragging"
+    />
     <!-- Display -->
-    <fieldset v-for="display in displays" :key="display.key">
-      <Display
-        ref="displays"
-        v-draggable
-        :on-board="true"
-        :level="display.level"
-        :name="display.name"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Display
+      v-for="display in displays"
+      :key="display.key"
+      ref="displays"
+      v-draggable
+      :on-board="true"
+      :level="display.level"
+      :name="display.name"
+      @dragging="onDragging"
+    />
     <!-- Conductor -->
-    <fieldset v-for="conductor in conductors" :key="conductor.key">
-      <Conductor ref="conductors" class="board__conductor" v-bind="conductor" />
-    </fieldset>
+    <Conductor
+      v-for="conductor in conductors"
+      :key="conductor.key"
+      ref="conductors"
+      class="board__conductor"
+      v-bind="conductor"
+    />
     <!-- TruthTable -->
     <TruthTable class="board__tt" />
   </div>
