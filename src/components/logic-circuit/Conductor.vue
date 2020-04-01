@@ -47,14 +47,15 @@ export default {
   },
   data() {
     return {
+      id: null,
+      level: 0,
+      activate: false,
       cood: {
         x1: this.outputX,
         y1: this.outputY,
         x2: this.inputX,
         y2: this.inputY
-      },
-      level: 0,
-      activate: false
+      }
     }
   },
   computed: {
@@ -70,6 +71,9 @@ export default {
       const thirdY = cood.y2 + diffY * ratio
       return `M ${cood.x1} ${cood.y1} C ${secX} ${secY}, ${thirdX} ${thirdY}, ${cood.x2} ${cood.y2}`
     }
+  },
+  mounted() {
+    this.id = this._uid
   },
   methods: {
     updateCood(x1, y1, x2, y2) {
@@ -88,6 +92,12 @@ export default {
           device.transmit(level)
         }
       }
+    },
+    unconnect() {
+      const id = this.id
+      this.transmit(0)
+      this.devices.forEach(d => d.conductors.removeIf(c => c.id === id))
+      // TODO emptify devices array
     },
     onClick(target) {
       this.toggleActivate()

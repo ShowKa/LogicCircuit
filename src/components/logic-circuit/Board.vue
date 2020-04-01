@@ -44,11 +44,12 @@
     />
     <!-- Conductor -->
     <Conductor
-      v-for="conductor in conductors"
+      v-for="(conductor, index) in conductors"
       :key="conductor.key"
       ref="conductors"
       class="board__conductor"
       v-bind="conductor"
+      @removeConductor="removeConductor(index)"
     />
     <!-- TruthTable -->
     <TruthTable class="board__tt" />
@@ -219,6 +220,9 @@ export default {
       this.clearNominated()
     }
   },
+  mounted() {
+    window.addEventListener('keypress', this.onkeypress)
+  },
   methods: {
     ...mapActions({
       clearNominated: 'clearNominated',
@@ -247,6 +251,25 @@ export default {
           conductor.updateCood(cood.x1, cood.y1, cood.x2, cood.y2)
         }
       }
+    },
+    onkeypress(e) {
+      if (e.keyCode === 8 || e.keyCode === 46) {
+        this.onDelete()
+      }
+    },
+    onDelete() {
+      this.$refs.conductors
+        .filter(c => c.activate)
+        .forEach(c => {
+          c.unconnect()
+          // FIXME not work when deleting two or more conductors.
+          // should sort or delete one only.
+          c.$emit('removeConductor')
+        })
+    },
+    removeConductor(index) {
+      this.$delete(this.conductors, index)
+      // TODO update States
     },
     getCoordsRelativeToBoard(elem) {
       const position = this._getCoords(elem)

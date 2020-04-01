@@ -111,3 +111,13 @@ new Vue({
   render: h => h(App),
   store
 })
+
+/* eslint-disable-next-line no-extend-native */
+Array.prototype.removeIf = function(callback) {
+  var i = this.length
+  while (i--) {
+    if (callback(this[i], i)) {
+      this.splice(i, 1)
+    }
+  }
+}
