@@ -1,5 +1,5 @@
 <template>
-  <div id="board" class="board">
+  <div id="board" class="board" @click="onClick">
     <!-- Constant -->
     <Constant
       v-for="constant in constants"
@@ -95,6 +95,9 @@ export default {
   },
   watch: {
     droppedConstants(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const constant = newValue[0]
       this.constants.push({
@@ -118,6 +121,9 @@ export default {
       this.clearDroppedConstants()
     },
     droppedSupplies(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const supply = newValue[0]
       this.supplies.push({
@@ -139,6 +145,9 @@ export default {
       this.clearDroppedSupplies()
     },
     droppedGates(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const gate = newValue[0]
       this.gates.push({
@@ -159,6 +168,9 @@ export default {
       this.clearDroppedGates()
     },
     droppedDisplays(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const display = newValue[0]
       this.displays.push({
@@ -266,6 +278,9 @@ export default {
           // should sort or delete one only.
           c.$emit('removeConductor')
         })
+    },
+    onClick() {
+      this.clearNominated()
     },
     removeConductor(index) {
       this.$delete(this.conductors, index)
