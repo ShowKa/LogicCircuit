@@ -50,6 +50,7 @@
       class="board__conductor"
       v-bind="conductor"
       @removeConductor="removeConductor(index)"
+      @activate="onActivateConductor"
     />
     <!-- TruthTable -->
     <TruthTable class="board__tt" />
@@ -269,13 +270,17 @@ export default {
         this.onDelete()
       }
     },
+    onActivateConductor(target) {
+      this.$refs.conductors
+        .filter(c => c.id !== target.id)
+        .filter(c => c.isActivate())
+        .forEach(c => c.toggleActivate())
+    },
     onDelete() {
       this.$refs.conductors
         .filter(c => c.activate)
         .forEach(c => {
           c.unconnect()
-          // FIXME not work when deleting two or more conductors.
-          // should sort or delete one only.
           c.$emit('removeConductor')
         })
     },

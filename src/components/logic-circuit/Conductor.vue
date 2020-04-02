@@ -97,13 +97,19 @@ export default {
       const id = this.id
       this.transmit(0)
       this.devices.forEach(d => d.conductors.removeIf(c => c.id === id))
-      // TODO emptify devices array
+      this.devices.splice(0, this.devices.length)
     },
-    onClick(target) {
+    onClick() {
       this.toggleActivate()
     },
     toggleActivate() {
       this.activate = !this.activate
+      if (this.activate) {
+        this.$emit('activate', this)
+      }
+    },
+    isActivate() {
+      return this.activate
     }
   }
 }
