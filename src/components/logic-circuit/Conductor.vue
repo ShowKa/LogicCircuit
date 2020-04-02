@@ -103,6 +103,8 @@ export default {
       this.toggleActivate()
     },
     toggleActivate() {
+      // FIXME error if remove one of two Conductors.
+      // https://stackoverrun.com/ja/q/10037030
       this.activate = !this.activate
       if (this.activate) {
         this.$emit('activate', this)
