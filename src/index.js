@@ -39,8 +39,8 @@ Vue.directive('droppable-on-board', {
       const elRect = el.getBoundingClientRect()
       if (
         e.target.id === 'board' &&
-        elRect.x >= boadRect.x &&
-        elRect.y >= boadRect.y
+        elRect.left >= boadRect.left &&
+        elRect.top >= boadRect.top
       ) {
         component.$emit('drop', component)
         return
