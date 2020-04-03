@@ -234,7 +234,7 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('keypress', this.onkeypress)
+    window.addEventListener('keyup', this.onKeyup)
   },
   methods: {
     ...mapActions({
@@ -265,7 +265,7 @@ export default {
         }
       }
     },
-    onkeypress(e) {
+    onKeyup(e) {
       if (e.keyCode === 8 || e.keyCode === 46) {
         this.onDelete()
       }
