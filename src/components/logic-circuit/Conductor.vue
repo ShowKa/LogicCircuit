@@ -1,13 +1,18 @@
 <template>
   <div class="conductor">
     <svg :height="heightToApply" :width="widthToApply">
-      <filter id="dropshadow" height="130%">
-        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="cyan" />
-      </filter>
       <path
         :d="curvedPath"
         fill="transparent"
-        :class="{ activate: activate }"
+        class="conductor__background"
+        :class="{ 'conductor__background--activate': activate }"
+        @click="onClick"
+      />
+      <path
+        :d="curvedPath"
+        fill="transparent"
+        class="conductor__line"
+        :class="{ 'conductor__line--activate': activate }"
         @click="onClick"
       />
     </svg>
@@ -105,12 +110,11 @@ export default {
       this.devices.forEach(d => d.conductors.removeIf(c => c.id === id))
       this.devices.splice(0, this.devices.length)
     },
-    onClick() {
+    onClick(e) {
+      e.stopPropagation()
       this.toggleActivate()
     },
     toggleActivate() {
-      // FIXME error if remove one of two Conductors.
-      // https://stackoverrun.com/ja/q/10037030
       this.activate = !this.activate
       if (this.activate) {
         this.$emit('activate', this)
@@ -126,13 +130,19 @@ export default {
 @import 'assets/app';
 .conductor {
   pointer-events: none;
-  path {
-    stroke: $color-complementary;
+  &__line {
+    stroke: $color-split-complementary-2;
     stroke-width: 2;
     pointer-events: auto;
   }
-  path.activate {
-    filter: url(#dropshadow);
+  &__background {
+    display: none;
+    stroke: $color-split-complementary-1;
+    stroke-width: 5;
+    pointer-events: auto;
+  }
+  &__background--activate {
+    display: initial;
   }
 }
 </style>

@@ -329,6 +329,12 @@ export default {
     },
     onClick() {
       this.clearNominated()
+      const conductors = this.$refs.conductors || []
+      for (const c of conductors) {
+        if (c.isActivate()) {
+          c.toggleActivate()
+        }
+      }
     },
     removeConductor(index) {
       this.$delete(this.conductors, index)
