@@ -265,10 +265,10 @@ export default {
       }
     },
     adjustElementPosition() {
-      const displays = this.$refs.displays
-      const constants = this.$refs.constants
-      const gates = this.$refs.gates
-      const supplies = this.$refs.supplies
+      const displays = this.$refs.displays || []
+      const constants = this.$refs.constants || []
+      const gates = this.$refs.gates || []
+      const supplies = this.$refs.supplies || []
       const elements = displays
         .concat(constants)
         .concat(gates)
