@@ -1,6 +1,6 @@
 <template>
   <div class="conductor">
-    <svg :height="height" :width="width">
+    <svg :height="heightToApply" :width="widthToApply">
       <filter id="dropshadow" height="130%">
         <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="cyan" />
       </filter>
@@ -55,7 +55,9 @@ export default {
         y1: this.outputY,
         x2: this.inputX,
         y2: this.inputY
-      }
+      },
+      heightToApply: this.height,
+      widthToApply: this.width
     }
   },
   computed: {
@@ -92,6 +94,10 @@ export default {
           device.transmit(level)
         }
       }
+    },
+    resize(height, width) {
+      this.heightToApply = height
+      this.widthToApply = width
     },
     unconnect() {
       const id = this.id

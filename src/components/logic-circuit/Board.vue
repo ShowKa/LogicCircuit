@@ -234,7 +234,11 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('keyup', this.onKeyup)
+    this.$nextTick(function() {
+      window.addEventListener('resize', this.rezieConductorsSvg)
+      window.addEventListener('resize', this.adjustElementPosition)
+      window.addEventListener('keyup', this.onKeyup)
+    })
   },
   methods: {
     ...mapActions({
@@ -249,8 +253,47 @@ export default {
       clearDroppedConstants: 'clearDroppedConstants',
       clearDroppedGates: 'clearDroppedGates'
     }),
-    onDragging(gate) {
-      const devices = gate.getDevices()
+    rezieConductorsSvg() {
+      if (!this.$refs.conductors) {
+        return
+      }
+      const rect = this.$el.getBoundingClientRect()
+      const height = rect.height
+      const width = rect.width
+      for (var c of this.$refs.conductors) {
+        c.resize(height, width)
+      }
+    },
+    adjustElementPosition() {
+      const displays = this.$refs.displays
+      const constants = this.$refs.constants
+      const gates = this.$refs.gates
+      const supplies = this.$refs.supplies
+      const elements = displays
+        .concat(constants)
+        .concat(gates)
+        .concat(supplies)
+      const board = this.$el.getBoundingClientRect()
+      for (var target of elements) {
+        const rect = target.$el.getBoundingClientRect()
+        const coord = this.getCoordsRelativeToBoard(target.$el)
+        var adjusted = false
+        if (coord.left > board.width) {
+          target.$el.style.left = board.width - rect.width + 'px'
+          adjusted = true
+        }
+        if (coord.top > board.height) {
+          target.$el.style.top = board.height - rect.height + 'px'
+          adjusted = true
+        }
+        if (adjusted) {
+          // adjust conductor's position
+          target.$emit('dragging', target)
+        }
+      }
+    },
+    onDragging(target) {
+      const devices = target.getDevices()
       for (const d of devices) {
         const conductors = d.getConductors()
         if (conductors.length === 0) {
