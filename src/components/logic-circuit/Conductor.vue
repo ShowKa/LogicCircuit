@@ -1,7 +1,15 @@
 <template>
   <div class="conductor">
     <svg :height="heightToApply" :width="widthToApply">
-      <path :d="curvedPath" fill="transparent" />
+      <filter id="dropshadow" height="130%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="cyan" />
+      </filter>
+      <path
+        :d="curvedPath"
+        fill="transparent"
+        :class="{ activate: activate }"
+        @click="onClick"
+      />
     </svg>
   </div>
 </template>
@@ -39,13 +47,15 @@ export default {
   },
   data() {
     return {
+      id: null,
+      level: 0,
+      activate: false,
       cood: {
         x1: this.outputX,
         y1: this.outputY,
         x2: this.inputX,
         y2: this.inputY
       },
-      level: 0,
       heightToApply: this.height,
       widthToApply: this.width
     }
@@ -63,6 +73,9 @@ export default {
       const thirdY = cood.y2 + diffY * ratio
       return `M ${cood.x1} ${cood.y1} C ${secX} ${secY}, ${thirdX} ${thirdY}, ${cood.x2} ${cood.y2}`
     }
+  },
+  mounted() {
+    this.id = this._uid
   },
   methods: {
     updateCood(x1, y1, x2, y2) {
@@ -85,6 +98,26 @@ export default {
     resize(height, width) {
       this.heightToApply = height
       this.widthToApply = width
+    },
+    unconnect() {
+      const id = this.id
+      this.transmit(0)
+      this.devices.forEach(d => d.conductors.removeIf(c => c.id === id))
+      this.devices.splice(0, this.devices.length)
+    },
+    onClick() {
+      this.toggleActivate()
+    },
+    toggleActivate() {
+      // FIXME error if remove one of two Conductors.
+      // https://stackoverrun.com/ja/q/10037030
+      this.activate = !this.activate
+      if (this.activate) {
+        this.$emit('activate', this)
+      }
+    },
+    isActivate() {
+      return this.activate
     }
   }
 }
@@ -96,6 +129,10 @@ export default {
   path {
     stroke: $color-complementary;
     stroke-width: 2;
+    pointer-events: auto;
+  }
+  path.activate {
+    filter: url(#dropshadow);
   }
 }
 </style>
