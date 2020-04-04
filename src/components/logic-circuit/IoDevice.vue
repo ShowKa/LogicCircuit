@@ -2,7 +2,7 @@
   <div
     class="io-device"
     :class="{ 'io-device__acceptable': acceptable }"
-    @mouseup="onMouseUp"
+    @click.stop="onClick"
   />
 </template>
 <script>
@@ -60,7 +60,7 @@ export default {
       pushNominated: 'pushNominated',
       clearNominated: 'clearNominated'
     }),
-    onMouseUp() {
+    onClick() {
       if (!this.onBoard) {
         return
       }

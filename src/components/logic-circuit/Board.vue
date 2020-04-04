@@ -1,51 +1,57 @@
 <template>
-  <div id="board" class="board">
+  <div id="board" class="board" @click="onClick">
     <!-- Constant -->
-    <fieldset v-for="constant in constants" :key="constant.key">
-      <Constant
-        ref="constants"
-        v-draggable
-        :level="constant.level"
-        :on-board="true"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Constant
+      v-for="constant in constants"
+      :key="constant.key"
+      ref="constants"
+      v-draggable
+      :level="constant.level"
+      :on-board="true"
+      @dragging="onDragging"
+    />
     <!-- Supply -->
-    <fieldset v-for="supply in supplies" :key="supply.key">
-      <Supply
-        ref="supplies"
-        v-draggable
-        :level="supply.level"
-        :on-board="true"
-        :name="supply.name"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Supply
+      v-for="supply in supplies"
+      :key="supply.key"
+      ref="supplies"
+      v-draggable
+      :level="supply.level"
+      :on-board="true"
+      :name="supply.name"
+      @dragging="onDragging"
+    />
     <!-- Gate -->
-    <fieldset v-for="gate in gates" :key="gate.key">
-      <Gate
-        ref="gates"
-        v-draggable
-        :on-board="true"
-        :gate-type="gate.type"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Gate
+      v-for="gate in gates"
+      :key="gate.key"
+      ref="gates"
+      v-draggable
+      :on-board="true"
+      :gate-type="gate.type"
+      @dragging="onDragging"
+    />
     <!-- Display -->
-    <fieldset v-for="display in displays" :key="display.key">
-      <Display
-        ref="displays"
-        v-draggable
-        :on-board="true"
-        :level="display.level"
-        :name="display.name"
-        @dragging="onDragging"
-      />
-    </fieldset>
+    <Display
+      v-for="display in displays"
+      :key="display.key"
+      ref="displays"
+      v-draggable
+      :on-board="true"
+      :level="display.level"
+      :name="display.name"
+      @dragging="onDragging"
+    />
     <!-- Conductor -->
-    <fieldset v-for="conductor in conductors" :key="conductor.key">
-      <Conductor ref="conductors" class="board__conductor" v-bind="conductor" />
-    </fieldset>
+    <Conductor
+      v-for="(conductor, index) in conductors"
+      :key="conductor.key"
+      ref="conductors"
+      class="board__conductor"
+      v-bind="conductor"
+      @removeConductor="removeConductor(index)"
+      @activate="onActivateConductor"
+    />
     <!-- TruthTable -->
     <TruthTable class="board__tt" />
   </div>
@@ -90,6 +96,9 @@ export default {
   },
   watch: {
     droppedConstants(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const constant = newValue[0]
       this.constants.push({
@@ -113,6 +122,9 @@ export default {
       this.clearDroppedConstants()
     },
     droppedSupplies(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const supply = newValue[0]
       this.supplies.push({
@@ -134,6 +146,9 @@ export default {
       this.clearDroppedSupplies()
     },
     droppedGates(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const gate = newValue[0]
       this.gates.push({
@@ -154,6 +169,9 @@ export default {
       this.clearDroppedGates()
     },
     droppedDisplays(newValue, oldValue) {
+      if (newValue.length === 0) {
+        return
+      }
       // add new component into Board
       const display = newValue[0]
       this.displays.push({
@@ -215,6 +233,9 @@ export default {
       this.clearNominated()
     }
   },
+  mounted() {
+    window.addEventListener('keyup', this.onKeyup)
+  },
   methods: {
     ...mapActions({
       clearNominated: 'clearNominated',
@@ -243,6 +264,32 @@ export default {
           conductor.updateCood(cood.x1, cood.y1, cood.x2, cood.y2)
         }
       }
+    },
+    onKeyup(e) {
+      if (e.keyCode === 8 || e.keyCode === 46) {
+        this.onDelete()
+      }
+    },
+    onActivateConductor(target) {
+      this.$refs.conductors
+        .filter(c => c.id !== target.id)
+        .filter(c => c.isActivate())
+        .forEach(c => c.toggleActivate())
+    },
+    onDelete() {
+      this.$refs.conductors
+        .filter(c => c.activate)
+        .forEach(c => {
+          c.unconnect()
+          c.$emit('removeConductor')
+        })
+    },
+    onClick() {
+      this.clearNominated()
+    },
+    removeConductor(index) {
+      this.$delete(this.conductors, index)
+      // TODO update States
     },
     getCoordsRelativeToBoard(elem) {
       const position = this._getCoords(elem)

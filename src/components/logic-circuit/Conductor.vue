@@ -1,15 +1,17 @@
 <template>
-<div class="conductor">
-  <svg
-    :height="height"
-    :width="width"
-  >
-    <path
-      :d="curvedPath"
-      fill="transparent"
-    />
-  </svg>
-</div>
+  <div class="conductor">
+    <svg :height="height" :width="width">
+      <filter id="dropshadow" height="130%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="cyan" />
+      </filter>
+      <path
+        :d="curvedPath"
+        fill="transparent"
+        :class="{ activate: activate }"
+        @click="onClick"
+      />
+    </svg>
+  </div>
 </template>
 <script>
 export default {
@@ -45,13 +47,15 @@ export default {
   },
   data() {
     return {
+      id: null,
+      level: 0,
+      activate: false,
       cood: {
         x1: this.outputX,
         y1: this.outputY,
         x2: this.inputX,
         y2: this.inputY
-      },
-      level: 0
+      }
     }
   },
   computed: {
@@ -61,12 +65,15 @@ export default {
       // M 10 10 C 20 20, 40 20, 50 10
       const diffX = cood.x2 > cood.x1 ? cood.x2 - cood.x1 : cood.x1 - cood.x2
       const diffY = cood.y2 - cood.y1
-      const secX = cood.x1 + (diffX * ratio)
-      const secY = cood.y1 + (diffY * ratio)
-      const thirdX = cood.x2 - (diffX * ratio)
-      const thirdY = cood.y2 + (diffY * ratio)
+      const secX = cood.x1 + diffX * ratio
+      const secY = cood.y1 + diffY * ratio
+      const thirdX = cood.x2 - diffX * ratio
+      const thirdY = cood.y2 + diffY * ratio
       return `M ${cood.x1} ${cood.y1} C ${secX} ${secY}, ${thirdX} ${thirdY}, ${cood.x2} ${cood.y2}`
     }
+  },
+  mounted() {
+    this.id = this._uid
   },
   methods: {
     updateCood(x1, y1, x2, y2) {
@@ -85,17 +92,41 @@ export default {
           device.transmit(level)
         }
       }
+    },
+    unconnect() {
+      const id = this.id
+      this.transmit(0)
+      this.devices.forEach(d => d.conductors.removeIf(c => c.id === id))
+      this.devices.splice(0, this.devices.length)
+    },
+    onClick() {
+      this.toggleActivate()
+    },
+    toggleActivate() {
+      // FIXME error if remove one of two Conductors.
+      // https://stackoverrun.com/ja/q/10037030
+      this.activate = !this.activate
+      if (this.activate) {
+        this.$emit('activate', this)
+      }
+    },
+    isActivate() {
+      return this.activate
     }
   }
 }
 </script>
 <style lang="scss">
-@import "assets/app";
+@import 'assets/app';
 .conductor {
-    pointer-events: none;
-    path {
-        stroke: $color-complementary;
-        stroke-width: 2;
-    }
+  pointer-events: none;
+  path {
+    stroke: $color-complementary;
+    stroke-width: 2;
+    pointer-events: auto;
+  }
+  path.activate {
+    filter: url(#dropshadow);
+  }
 }
 </style>

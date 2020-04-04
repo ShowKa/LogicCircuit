@@ -56,7 +56,7 @@ const mutations = {
     state.nominated.push(payload.component)
   },
   clearNominated(state, payload) {
-    state.nominated.length = 0
+    state.nominated.splice(0, state.nominated.length)
   },
   pushConstant(state, payload) {
     state.constants.push(payload.component)
@@ -78,25 +78,25 @@ const mutations = {
     state.droppedDisplays.push(payload.component)
   },
   clearDroppedDisplays(state, payload) {
-    state.droppedDisplays.length = 0
+    state.droppedDisplays.splice(0, state.droppedDisplays.length)
   },
   pushDroppedSupply(state, payload) {
     state.droppedSupplies.push(payload.component)
   },
   clearDroppedSupplies(state, payload) {
-    state.droppedSupplies.length = 0
+    state.droppedSupplies.splice(0, state.droppedSupplies.length)
   },
   pushDroppedConstant(state, payload) {
     state.droppedConstants.push(payload.component)
   },
   clearDroppedConstants(state, payload) {
-    state.droppedConstants.length = 0
+    state.droppedConstants.splice(0, state.droppedConstants.length)
   },
   pushDroppedGate(state, payload) {
     state.droppedGates.push(payload.component)
   },
   clearDroppedGates(state, payload) {
-    state.droppedGates.length = 0
+    state.droppedGates.splice(0, state.droppedGates.length)
   }
 }
 
