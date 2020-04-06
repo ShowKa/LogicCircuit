@@ -17,7 +17,7 @@ module.exports = {
   mode: 'development',
   entry: [
     // optional if file name is index.js
-    './src/index.js'
+    '@babel/polyfill', './src/index.js'
   ],
   devServer: {
     hot: true,
