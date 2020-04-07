@@ -33,23 +33,32 @@ Vue.directive('droppable-on-board', {
     }
     // up
     function mouseup(e) {
+      const toStartPosition = function() {
+        // at start position
+        var top = startY
+        var left = startX
+        el.style.top = top + 'px'
+        el.style.left = left + 'px'
+      }
       document.removeEventListener('mousemove', mousemove)
       document.removeEventListener('mouseup', mouseup)
+      if (!e.target.getBoundingClientRect) {
+        toStartPosition()
+        return
+      }
       const boadRect = e.target.getBoundingClientRect()
       const elRect = el.getBoundingClientRect()
       if (
         e.target.id === 'board' &&
-        elRect.x >= boadRect.x &&
-        elRect.y >= boadRect.y
+        elRect.left >= boadRect.left &&
+        elRect.top >= boadRect.top &&
+        (elRect.left + elRect.width) < boadRect.right &&
+        (elRect.top + elRect.height) < boadRect.bottom
       ) {
         component.$emit('drop', component)
         return
       }
-      // at start position
-      var top = startY
-      var left = startX
-      el.style.top = top + 'px'
-      el.style.left = left + 'px'
+      toStartPosition()
     }
     // down
     el.addEventListener('mousedown', function(e) {
@@ -111,3 +120,13 @@ new Vue({
   render: h => h(App),
   store
 })
+
+/* eslint-disable-next-line no-extend-native */
+Array.prototype.removeIf = function(callback) {
+  var i = this.length
+  while (i--) {
+    if (callback(this[i], i)) {
+      this.splice(i, 1)
+    }
+  }
+}
